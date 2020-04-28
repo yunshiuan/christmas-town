@@ -17,7 +17,7 @@ import { CircularTrack, TrackCube, TrackCar } from "../../examples/track.js";
 import { Helicopter, Helipad } from "../../examples/helicopter.js";
 import { ShinySculpture } from "../../examples/shinySculpture.js";
 import { MorphTest } from "../../examples/morph.js";
-import { BuildingGable } from "./building.js";
+import { BuildingWood, BuildingBrick } from "./building.js";
 import { cubeTextureHelp } from "./skybox.js";
 
 import { SimpleHouse } from "../../examples/house.js"
@@ -27,28 +27,39 @@ import { SimpleHouse } from "../../examples/house.js"
  * @param {GrWorld} world 
  */
 export function main(world) {
-  // make two rows of houses, mainly to give something to look at
+  /** 
+   * Place wood houses
+   */
+
   for (let i = 0; i < 20; i += 5) {
-    world.add(new BuildingGable({ x: i, z: -12, scale: 2 }));
-    world.add(new BuildingGable({ x: i, z: 12, scale: 2 }));
-    //  world.add(new BuildingGable({ x: 0, y: 0, z: 0, scale: 2 }));
+    world.add(new BuildingWood({ x: i, z: -10, scale: 2 }));
+    world.add(new BuildingWood({ x: i, z: 12, scale: 2 }));
   }
-  // world.add(new SimpleHouse({ x: 0, y: 0, z: 0 }));
 
-  /** Race Track - with three things racing around */
-  let track = new CircularTrack();
-  let tc1 = new TrackCube(track);
-  let tc2 = new TrackCube(track);
-  let tc3 = new TrackCar(track);
+  /** 
+   * Place brick houses
+   */
 
-  // place things are different points on the track
-  tc2.u = 0.25;
-  tc3.u = 0.125;
-  // and make sure they are in the world
-  world.add(track);
-  world.add(tc1);
-  world.add(tc2);
-  world.add(tc3);
+  for (let i = 0; i < 20; i += 5) {
+    world.add(new BuildingBrick({ x: i, z: -16, scale: 2 }));
+    world.add(new BuildingBrick({ x: i, z: 18, scale: 2 }));
+  }
+  // world.add(new BuildingBrick({ x: 0, y: 0, z: 0, scale: 2 }));
+
+  // /** Race Track - with three things racing around */
+  // let track = new CircularTrack();
+  // let tc1 = new TrackCube(track);
+  // let tc2 = new TrackCube(track);
+  // let tc3 = new TrackCar(track);
+
+  // // place things are different points on the track
+  // tc2.u = 0.25;
+  // tc3.u = 0.125;
+  // // and make sure they are in the world
+  // world.add(track);
+  // world.add(tc1);
+  // world.add(tc2);
+  // world.add(tc3);
 
   /** Helicopter - first make places for it to land*/
   world.add(new Helipad(-15, 0, 0));
