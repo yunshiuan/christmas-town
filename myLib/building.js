@@ -39,6 +39,7 @@ export class BuildingWood extends GrObject {
         const y = params.y ? Number(params.y) : 0;
         const z = params.z ? Number(params.z) : 0;
         const scale = params.scale ? Number(params.scale) : 1;
+
         const wall_color = "#ffa64d";
         const front_color1 = wall_color;
         const front_color2 = wall_color;
@@ -282,6 +283,10 @@ export class BuildingWood extends GrObject {
         this.posX = x;
         this.posY = y;
         this.posZ = z;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.scale = scale;
     }
 }
 /**
@@ -659,6 +664,10 @@ export class BuildingBrick extends GrObject {
         this.posX = x;
         this.posY = y;
         this.posZ = z;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.scale = scale;
     }
 }
 
@@ -669,11 +678,11 @@ class stoneWindow extends GrObject {
     constructor(h, w) {
         let geometry = new doorGeometry(h, w, "white").geometry;
         if (!t_window_brick) {
-            t_door_brick = new T.TextureLoader().load("./images/window_stone_texture.png");
+            t_window_brick = new T.TextureLoader().load("./images/window_stone_texture.png");
         }
 
         let material = new T.MeshStandardMaterial({
-            map: t_door_brick,
+            map: t_window_brick,
             roughness: 0.9,
             vertexColors: T.VertexColors
         });
