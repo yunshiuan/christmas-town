@@ -2,8 +2,6 @@
 // @ts-check
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
-import * as H from "./helperFun.js";
-import { GrCube } from "../../libs/CS559-Framework/SimpleObjects.js";
 
 let snowmanCtr = 0;
 

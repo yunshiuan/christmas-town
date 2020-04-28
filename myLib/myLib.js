@@ -19,9 +19,10 @@ import { ShinySculpture } from "../../examples/shinySculpture.js";
 import { MorphTest } from "../../examples/morph.js";
 import { BuildingWood, BuildingBrick } from "./building.js";
 import { Snowman } from "./snowman.js";
-import { cubeTextureHelp } from "./skybox.js";
+import { Carousel } from "./carousel.js";
 
-import { SimpleHouse } from "../../examples/house.js"
+import { cubeTextureHelp } from "./skybox.js";
+// import { SimpleHouse } from "../../examples/house.js"
 /********************************************************************** */
 /**
  * 
@@ -90,6 +91,11 @@ export function main(world) {
     }));
   }
 
+  /** 
+   * Place the carousel
+   */
+
+  world.add(new Carousel({ x: -10, scale: 0.7 }));
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
