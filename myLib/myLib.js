@@ -23,7 +23,6 @@ import { Carousel } from "./carousel.js";
 
 import { cubeTextureHelp } from "./skybox.js";
 // import { SimpleHouse } from "../../examples/house.js"
-/********************************************************************** */
 /**
  * 
  * @param {GrWorld} world 
@@ -96,7 +95,7 @@ export function main(world) {
    */
 
   world.add(new Carousel({ x: -10, scale: 0.7 }));
-  // /** Race Track - with three things racing around */
+  /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
   // let tc2 = new TrackCube(track);
@@ -120,7 +119,7 @@ export function main(world) {
   // world.add(copter);
   // copter.getPads(world.objects);
 
-  // these are testing objects
+  // // these are testing objects
   // world.add(new ShinySculpture(world));
   // world.add(new MorphTest({ x: 10, y: 3, r: 2 }));
 

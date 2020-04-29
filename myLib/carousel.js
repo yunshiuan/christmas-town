@@ -161,8 +161,6 @@ export class Carousel extends GrObject {
         carousel.add(roof);
         roof.translateY(4.8);
 
-        // note that we have to make the Object3D before we can call
-        // super and we have to call super before we can use this
         super(`Carousel-${carouselObCtr++}`, carousel);
         this.whole_ob = carousel;
         this.platform = platform;
@@ -175,7 +173,15 @@ export class Carousel extends GrObject {
         this.whole_ob.position.y = posY;
         this.whole_ob.position.z = posZ;
         this.scale = scale;
+
         carousel.scale.set(scale, scale, scale);
+
+        // make the first horse rideable
+        this.ridePoint = new T.Object3D();
+        this.ridePoint.rotateY(Math.PI / 2);
+        this.ridePoint.position.set(0, 0, 0);
+        this.rideable = this.ridePoint;
+        // add the drivepoint in tick()
 
         // the keep track of the time
         this.time = 0;
@@ -223,6 +229,7 @@ export class Carousel extends GrObject {
                         horse_object.translateX(0.8 * this.width);
                         horse_object.rotateY(225 * (Math.PI / 180));
                         this.horses[index].horse = horse_object;
+
                         // update the flag after updated the material
                         this.horses[index].flagMaterial = true;
                     }
@@ -232,8 +239,13 @@ export class Carousel extends GrObject {
             updateAllMat = true;
         }
 
+        // add the ridepoint to the first horse
+        if (!this.horses[0].horse.children[0] && this.horses[0].flagMaterial) {
+            this.horses[0].horse.add(this.ridePoint);
+        }
+
         // rotate the whole carousel
-        this.whole_ob.rotateY(0.003 * step);
+        this.whole_ob.rotateY(0.001 * step);
 
         // move the horses up and down
 
@@ -246,7 +258,7 @@ export class Carousel extends GrObject {
             const horse = this.horses[index].horse;
 
             // sine movement
-            horse.position.y = 0.5 * Math.sin(t * Math.PI * 2);
+            horse.position.y = 0.5 * Math.sin(t * Math.PI * 1);
 
         }
     }
