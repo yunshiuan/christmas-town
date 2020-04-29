@@ -16,6 +16,7 @@ import { BuildingWood, BuildingBrick } from "./building.js";
 import { Snowman } from "./snowman.js";
 import { Carousel } from "./carousel.js";
 import { Helicopter } from "./helicopter.js";
+import { Bus } from "./bus.js";
 
 import { cubeTextureHelp } from "./skybox.js";
 // import { SimpleHouse } from "../../examples/house.js"
@@ -91,6 +92,18 @@ export function main(world) {
    */
 
   world.add(new Carousel({ x: -10, scale: 0.7 }));
+
+  /** 
+   * Place the helicopter
+   */
+  let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
+  world.add(helicopter);
+
+  /** 
+   * Place the bus
+   */
+  let bus = new Bus({ x: 10, y: 0, z: 0});
+  world.add(bus);
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
@@ -106,11 +119,6 @@ export function main(world) {
   // world.add(tc2);
   // world.add(tc3);
 
-  /** 
-   * Place the helicopter
-   */
-  let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
-  world.add(helicopter);
   /** Helicopter - first make places for it to land*/
   // world.add(new Helipad(-15, 0, 0));
   // world.add(new Helipad(15, 0, 0));
