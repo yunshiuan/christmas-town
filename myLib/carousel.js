@@ -252,7 +252,7 @@ export class Carousel extends GrObject {
         this.time += step / 1000; // time in seconds (ms -> sec)
 
         for (let index = 0; index < this.horses.length; index++) {
-            // set the y position based on the time (each horse a off a bit)
+            // set the y position based on the time (each horse off by a bit)
             let t = (this.time + index / this.horses.length) % 1;
 
             const horse = this.horses[index].horse;

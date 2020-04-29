@@ -109,7 +109,7 @@ export function main(world) {
   /** 
    * Place the helicopter
    */
-  let helicopter = new Helicopter({ x: 0, y: 10, z: 0, scale: 0.3 });
+  let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
   world.add(helicopter);
   /** Helicopter - first make places for it to land*/
   // world.add(new Helipad(-15, 0, 0));

@@ -28,6 +28,7 @@ export class Helicopter extends GrObject {
         const posY = params.y ? Number(params.y) : 0;
         const posZ = params.z ? Number(params.z) : 0;
         const scale = params.scale ? Number(params.scale) : 0.15;
+        const SPEED = 0.01;
         // const altitude = 5;
 
         // collect the body and the propeller
@@ -42,10 +43,7 @@ export class Helicopter extends GrObject {
         const propellerColor = "#997300";
         this.addPropeller(0, 2, -3, 0.3, propellerColor);
         this.addPropeller(0, 2, 3, 0.3, propellerColor);
-        // the flying direction and speed
-        this.theta = 0;
-        this.speed = 0.03;
-        this.omega = 0.01;
+        this.speed = SPEED;
         // this.altitude = altitude;
         // put the object in its place
         this.group.position.x = posX;
@@ -53,6 +51,12 @@ export class Helicopter extends GrObject {
         this.group.position.z = posZ;
         this.scale = scale;
         this.setScale(scale);
+
+        // parameters for tick()
+        this.originX = posX;
+        this.originY = posY;
+        this.originZ = posZ;
+        this.timer = 0;
 
         // make the first horse rideable
         // let axesHelper = new T.AxesHelper(5);
@@ -291,25 +295,17 @@ export class Helicopter extends GrObject {
         /**
          * move in a circle
          */
-        let currentPos = this.getPosition();
-        // this.adjustedSpeed = this.speed * Math.abs(Math.sin(this.theta));
-        let dX = -2 * Math.cos(2 * this.theta) * this.speed;
-        let dY = 2 * Math.cos(2 * this.theta) * this.speed;
-        let dZ = 2 * Math.sin(this.theta) * this.speed;
+        this.timer += this.speed;
         let nexPos =
         {
-            x: currentPos.x + dX,
-            y: currentPos.y + dY,
-            z: currentPos.z + dZ
+            x: this.originX + (5) * (Math.sin(2 * this.timer)),
+            y: this.originY + (0) * (Math.sin(2 * this.timer)),
+            z: this.originZ + (15) * (Math.sin(this.timer))
         };
         // head toward the flying direction
         this.group.lookAt(nexPos.x, nexPos.y, nexPos.z);
         // update the body mass position
         this.setPosition(nexPos.x, nexPos.y, nexPos.z);
-
-        // update the flying direction
-        // - angular velocity
-        this.theta += this.omega;
 
         // spin the propellers
         for (let index = 0; index < this.propellers.length; index++) {
