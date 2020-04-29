@@ -3,23 +3,19 @@
 
 //
 // CS559 - Graphics Town - Workbook 12
-// Example Code: 
-// Example "Town"
-//
 // This sets up the town loading different objects. 
-//
 // It should be called from the onload function, after the world has been created
 
-/** These imports are for the examples - feel free to remove them */
 import { GrWorld } from "../../libs/CS559-Framework/GrWorld.js";
 // import { SimpleHouse } from "../../examples/house.js";
 import { CircularTrack, TrackCube, TrackCar } from "../../examples/track.js";
-import { Helicopter, Helipad } from "../../examples/helicopter.js";
+// import { Helicopter, Helipad } from "../../examples/helicopter.js";
 import { ShinySculpture } from "../../examples/shinySculpture.js";
 import { MorphTest } from "../../examples/morph.js";
 import { BuildingWood, BuildingBrick } from "./building.js";
 import { Snowman } from "./snowman.js";
 import { Carousel } from "./carousel.js";
+import { Helicopter } from "./helicopter.js";
 
 import { cubeTextureHelp } from "./skybox.js";
 // import { SimpleHouse } from "../../examples/house.js"
@@ -95,7 +91,7 @@ export function main(world) {
    */
 
   world.add(new Carousel({ x: -10, scale: 0.7 }));
-  /** Race Track - with three things racing around */
+  // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
   // let tc2 = new TrackCube(track);
@@ -110,6 +106,11 @@ export function main(world) {
   // world.add(tc2);
   // world.add(tc3);
 
+  /** 
+   * Place the helicopter
+   */
+  let helicopter = new Helicopter({ x: 0, y: 10, z: 0, scale: 0.3 });
+  world.add(helicopter);
   /** Helicopter - first make places for it to land*/
   // world.add(new Helipad(-15, 0, 0));
   // world.add(new Helipad(15, 0, 0));
