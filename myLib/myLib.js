@@ -17,6 +17,7 @@ import { Snowman } from "./snowman.js";
 import { Carousel } from "./carousel.js";
 import { Helicopter } from "./helicopter.js";
 import { Bus } from "./bus.js";
+import { Track } from "./track.js";
 
 import { cubeTextureHelp } from "./skybox.js";
 // import { SimpleHouse } from "../../examples/house.js"
@@ -102,8 +103,14 @@ export function main(world) {
   /** 
    * Place the bus
    */
-  let bus = new Bus({ x: 10, y: 0, z: 0});
+  let bus = new Bus({ x: 10, y: 0, z: 0, scale: 1 });
   world.add(bus);
+
+  /** 
+   * Place the track
+   */
+  let track = new Track();
+  world.add(track);
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
