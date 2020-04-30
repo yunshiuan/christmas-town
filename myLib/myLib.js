@@ -18,6 +18,7 @@ import { Carousel } from "./carousel.js";
 import { Helicopter } from "./helicopter.js";
 import { Bus } from "./bus.js";
 import { Track } from "./track.js";
+import { Tree } from "./tree.js";
 
 import { cubeTextureHelp } from "./skybox.js";
 // import { SimpleHouse } from "../../examples/house.js"
@@ -155,6 +156,16 @@ export function main(world) {
     }
   );
   world.add(bus);
+
+  /**
+   * Place the tree
+   */
+  let tree = new Tree(
+    {
+      x: 10,
+      scale: 1.5
+    });
+  world.add(tree);
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);

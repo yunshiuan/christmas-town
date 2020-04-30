@@ -24,7 +24,6 @@ export class Bus extends GrObject {
      */
     constructor(params = {}) {
         let busGroup = new T.Group();
-
         /**
          * Constants
          */
