@@ -225,12 +225,15 @@ export class MiniLoader extends GrObject {
         /** 
          * Make the miniloader rideable
          */
-        let axesHelper = new T.AxesHelper(5);
+        // let axesHelper = new T.AxesHelper(5);
         let ridePoint = new T.Object3D();
         ridePoint.rotateY(H.degreesToRadians(-90));
+        ridePoint.translateX(4);
+        ridePoint.translateZ(-6);
         this.whole_ob.add(ridePoint);
         // this.whole_ob.add(axesHelper);
-        ridePoint.add(axesHelper);
+        // ridePoint.add(axesHelper);
+        this.rideable = ridePoint;
 
 
     }
