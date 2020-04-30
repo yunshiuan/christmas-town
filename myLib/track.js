@@ -58,13 +58,33 @@ export class Track extends GrObject {
 
         this.arrayControlPoints = arrayControlPoints;
         this.arrayBezierPoints = arrayBezierPoints;
+        this.numSegments = arrayBezierPoints.length;
     }
     /**
-     * 
-     * @param {number} u - the parameter for this entire track
+     * Get the position and velocity of a given parameter value.
+     * @param {number} t - the parameter for this entire track [0, num_segments]
+     * @param {boolean} arc_length - convert the t to arc-length t
+     * @returns {*} the coordinate and velocity (posX, posy, vX, vY)
      */
-    getPosOnTrack(u){
-
+    getPosOnTrack(t, arc_length) {
+        // make sure t is witin [0, num_segments]
+        t = t % this.numSegments;
+        // constant speed (arc-length) or not 
+        if (arc_length) {
+            t = this.reparamToArclength(t, this.numSegments, this.distanceTable);
+        }
+        // decide which part of segment is the train on right now
+        // - and also get the control points for that segment
+        let segmentIndex = Math.floor(t);
+        let b1 = this.arrayBezierPoints[segmentIndex][0];
+        let b2 = this.arrayBezierPoints[segmentIndex][1];
+        let b3 = this.arrayBezierPoints[segmentIndex][2];
+        let b4 = this.arrayBezierPoints[segmentIndex][3];
+        // - the free parameter of that segment
+        let u = t - segmentIndex;
+        // - derive the train position and velocity
+        let pointPar = this.getBezierPos(b1, b2, b3, b4, u);
+        return pointPar;
     }
     /**
      * Build all the bezier segments and put them in the T.group.
@@ -244,5 +264,51 @@ export class Track extends GrObject {
             "vY": vt[1]
         };
         return pointPar;
+    }
+
+    /**
+     * Reparameterize the free parameter t to t* (arc-length) given the whole track.
+     *
+     * @param {number} nonArcT - the non-arc-length free parameter
+     * @param {number} maxT - the maximun of the free parameter
+     * @param {Array<Array<number>>} distanceTable - distance table (columns: [listT, listTravledDistance, posX, posY, vX, vY])
+     * @returns {number} - the arc-length free parameter
+     */
+    reparamToArclength(nonArcT, maxT, distanceTable) {
+        /** 
+         * Interpolate the t* based on the distance table
+         */
+        // get the total distance
+        let totalDistance = distanceTable[1][distanceTable[1].length - 1];
+        // let totalDistance = listTravledDistance[listTravledDistance.length - 1];
+        // the traveled distance at t
+        let tTraveledDistance = (nonArcT / maxT) * totalDistance;
+
+        // find the closest two rows that enclose the 'tTraveledDistance'
+        // - the upper boundary and the lower boundary of t*
+        for (let rowIndex = 0; rowIndex < distanceTable[0].length; rowIndex++) {
+            const thisRow = {
+                "t": distanceTable[0][rowIndex],
+                "traveledDistance": distanceTable[1][rowIndex]
+            };
+
+            // break if found the upper bound of t*
+            if (thisRow.traveledDistance > tTraveledDistance) {
+                let arcTUpperBound = thisRow.t;
+                // special case for the first row
+                if (rowIndex == 0) {
+                    let arcT = 0;
+                    return arcT;
+                } else {
+                    let arcTLowerBound = distanceTable[0][rowIndex - 1];
+                    let disFromLower = tTraveledDistance - distanceTable[1][rowIndex - 1];
+                    let disFromLowerToUpper = distanceTable[1][rowIndex] - distanceTable[1][rowIndex - 1];
+                    let propFromLower = disFromLower / disFromLowerToUpper;
+                    // interpolate
+                    let arcT = ((1 - propFromLower) * arcTLowerBound) + (propFromLower * arcTUpperBound);
+                    return arcT;
+                }
+            }
+        }
     }
 }

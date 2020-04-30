@@ -4,6 +4,7 @@ import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
 import { ObjGrObject } from "../../libs/CS559-Framework/loaders.js";
 import * as H from "./helperFun.js";
+import { Track } from "./track.js";
 
 let busObCtr = 0;
 // A bus
@@ -14,6 +15,8 @@ let busObCtr = 0;
  * @property {number} [y=0]
  * @property {number} [z=0]
  * @property {number} [scale=1]
+ * @property {number} [speed=1]
+ * @property {Track} [track=null]
  */
 export class Bus extends GrObject {
     /**
@@ -197,6 +200,30 @@ export class Bus extends GrObject {
         // lift the bus so that the wheels touch the ground
         this.whole_ob.position.y = params.y ? Number(params.y) + wheel_radius * scale : wheel_radius * scale;
         this.whole_ob.position.z = params.z ? Number(params.z) : 0;
+        /**
+         * Handle the track
+         */
+        this.track = params.track;
+        // the starting position on the track
+        this.u = 0;
+        this.speed = params.speed ? Number(params.speed) : 1;
+        // this.ridePoint = new T.Object3D();
+        // this.ridePoint.translateY(0.5);
+        // this.objects[0].add(this.ridePoint);
+        // this.rideable = this.ridePoint;        
 
+    }
+    /**
+     * The movement of the bus
+     * @param {*} step 
+     * @param {*} timeOfDay 
+     */
+    tick(step, timeOfDay) {
+        this.u += step / 2000 * (this.speed);
+        let pos = this.track.getPosOnTrack(this.u, true);
+        this.whole_ob.position.set(pos.posX, this.whole_ob.position.y, pos.posY);
+        let zAngle = Math.atan2(pos.vY, pos.vX);
+        // turn the object so the Z axis is facing in that direction
+        this.whole_ob.rotation.y = -zAngle - Math.PI;
     }
 }

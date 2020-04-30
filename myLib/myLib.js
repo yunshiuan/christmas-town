@@ -31,7 +31,7 @@ export function main(world) {
    */
   const NUM_COL_HOUSES = 4;
   const INTERVAL_HOUSE = 5;
-  const INTERVAL_ROW = 8;
+  const INTERVAL_ROW = 9;
   /** 
    * Place wood houses
    */
@@ -146,7 +146,14 @@ export function main(world) {
   /** 
    * Place the bus
    */
-  let bus = new Bus({ x: 10, y: 0, z: 0, scale: 1 });
+  let bus = new Bus(
+    {
+      x: 10, y: 0, z: 0,
+      scale: 1,
+      track: track,
+      speed: 2
+    }
+  );
   world.add(bus);
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
