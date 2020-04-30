@@ -211,6 +211,10 @@ export function main(world) {
     // [tree_far_pos_x - 2, tree_far_pos_z],
     [tree_far_pos_x - 5, tree_far_pos_z],
     [tree_far_pos_x - 3, tree_far_pos_z + 4],
+    [tree_far_pos_x - 5, tree_far_pos_z + 8],
+    [tree_far_pos_x - 3, tree_far_pos_z + 10],
+    [tree_far_pos_x - 5, tree_far_pos_z + 11],
+    [tree_far_pos_x - 2, tree_far_pos_z + 11],
     // near (the amusement park)
     [tree_near_pos_x - 4, tree_near_pos_z - 5],
     [tree_near_pos_x - 2, tree_near_pos_z],
