@@ -7,6 +7,9 @@ import * as H from "./helperFun.js";
 import { Track } from "./track.js";
 
 let treeCtr = 0;
+let stem_material;
+let crown_material;
+let stem_geom;
 // A tree
 /**
  * @typedef treeProperties
@@ -46,16 +49,20 @@ export class Tree extends GrObject {
         /** 
          * Make the stem
          */
-        let stem_material = new T.MeshStandardMaterial({
-            color: STEM_COLOR,
-            roughness: 0.9,
-            metalness: 0
-        });
-        let stem_geom = new T.CylinderBufferGeometry(
-            STEM_RADIUS,
-            STEM_RADIUS,
-            STEM_HEIGHT,
-            20);
+        if (!stem_material) {
+            stem_material = new T.MeshStandardMaterial({
+                color: STEM_COLOR,
+                roughness: 0.9,
+                metalness: 0
+            });
+        }
+        if (!stem_geom) {
+            stem_geom = new T.CylinderBufferGeometry(
+                STEM_RADIUS,
+                STEM_RADIUS,
+                STEM_HEIGHT,
+                20);
+        }
         let stem_mesh = new T.Mesh(stem_geom, stem_material);
         stem_mesh.translateY(STEM_HEIGHT / 2);
         treeGroup.add(stem_mesh);
@@ -63,12 +70,13 @@ export class Tree extends GrObject {
         /** 
          * Make the tree crowns
          */
-
-        let crown_material = new T.MeshStandardMaterial({
-            color: CROWN_COLOR,
-            roughness: 0.9,
-            metalness: 0
-        });
+        if (!crown_material) {
+            crown_material = new T.MeshStandardMaterial({
+                color: CROWN_COLOR,
+                roughness: 0.9,
+                metalness: 0
+            });
+        }
         let crownHeight = STEM_HEIGHT * 0.4;
         for (let crownIndex = 0; crownIndex < NUM_CROWNS; crownIndex++) {
             let crown_geom = new T.CylinderBufferGeometry(

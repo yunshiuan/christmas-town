@@ -158,7 +158,7 @@ export function main(world) {
   world.add(bus);
 
   /**
-   * Place the tree
+   * Place the big tree
    */
   let tree = new Tree(
     {
@@ -166,6 +166,27 @@ export function main(world) {
       scale: 1.5
     });
   world.add(tree);
+
+  /**
+   * Place the forest
+   */
+  const tree_positions = [
+    [-12, 6],
+    [-15, 6],
+    [-10, 8],
+    [-12, 10],
+    [-14, 14],
+  ];
+  for (let treeIndex = 0; treeIndex < tree_positions.length; treeIndex++) {
+    world.add(new Tree(
+      {
+        x: tree_positions[treeIndex][0],
+        z: tree_positions[treeIndex][1],
+        scale: 0.5
+      })
+    );
+  }
+
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
