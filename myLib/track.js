@@ -32,7 +32,7 @@ export class Track extends GrObject {
             const INIT_HEIGHT = 3;
             const INIT_UPPER_WIDTH = 3;
             const INIT_LOWER_WIDTH = 1;
-            const INIT_P0 = { "x": 15, "y": 15 };
+            const INIT_P0 = { "x": 0, "y": 0 };
             const INIT_LOWER_SHIFT = 10;
             const default_points = [
                 [INIT_P0.x, INIT_P0.y],
@@ -50,6 +50,7 @@ export class Track extends GrObject {
         let arrayBezierPoints = this.getArrayBezierControlPoints(arrayControlPoints);
 
         // build the distance table
+        // - for arc-length parameterization for whatever is following the track
         this.distanceTable = this.buildDistanceTable(arrayBezierPoints);
 
         // build the track
@@ -57,6 +58,13 @@ export class Track extends GrObject {
 
         this.arrayControlPoints = arrayControlPoints;
         this.arrayBezierPoints = arrayBezierPoints;
+    }
+    /**
+     * 
+     * @param {number} u - the parameter for this entire track
+     */
+    getPosOnTrack(u){
+
     }
     /**
      * Build all the bezier segments and put them in the T.group.
@@ -72,10 +80,10 @@ export class Track extends GrObject {
         for (let segmentIndex = 0; segmentIndex < arrayBezierPoints.length; segmentIndex++) {
             let segmentControlPoints = arrayBezierPoints[segmentIndex];
             let curve = new T.CubicBezierCurve3(
-                new T.Vector3(segmentControlPoints[0][0], segmentControlPoints[0][1], 0),
-                new T.Vector3(segmentControlPoints[1][0], segmentControlPoints[1][1], 0),
-                new T.Vector3(segmentControlPoints[2][0], segmentControlPoints[2][1], 0),
-                new T.Vector3(segmentControlPoints[3][0], segmentControlPoints[3][1], 0)
+                new T.Vector3(segmentControlPoints[0][0], 0, segmentControlPoints[0][1]),
+                new T.Vector3(segmentControlPoints[1][0], 0, segmentControlPoints[1][1]),
+                new T.Vector3(segmentControlPoints[2][0], 0, segmentControlPoints[2][1]),
+                new T.Vector3(segmentControlPoints[3][0], 0, segmentControlPoints[3][1])
             );
             let points = curve.getPoints(50);
             let geometry_curve = new T.BufferGeometry().setFromPoints(points);
@@ -83,16 +91,16 @@ export class Track extends GrObject {
 
             // also add the control points 
             // - only draw the control points that are interpolated
-            // -- which is the first and the last control point of the bezier spline
+            // -- which is the first (and the last) control point of the bezier spline
+            // -- no need to draw both the first and the last since it's a close track
             geometry_point = new T.SphereBufferGeometry(0.3);
-            for (let control_point_index = 0; control_point_index < segmentControlPoints.length; control_point_index++) {
-                let controlPointObject = new T.Mesh(geometry_point, material_point);
-                controlPointObject.position.set(
-                    segmentControlPoints[control_point_index][0],
-                    segmentControlPoints[control_point_index][1],
-                    0);
-                group.add(controlPointObject);
-            }
+            let controlPointObject = new T.Mesh(geometry_point, material_point);
+            controlPointObject.position.set(
+                segmentControlPoints[0][0],
+                0,
+                segmentControlPoints[0][1]
+            );
+            group.add(controlPointObject);
             group.add(curveObject);
         }
         return group;
@@ -144,7 +152,8 @@ export class Track extends GrObject {
     * Build the distance table for interpolation (used by reparamToArclength()).
     *
     * @param {Array<Array<Array<number>>>} arrayBezierPoints - the array of the controls point of each cubic Bezier curve segment
-    * @returns {Array<Array<number>>} - distance table (columns: [listT, listTravledDistance, posX, posY, vX, vY])
+    * @returns {Array<Array<number>>} - distance table 
+    * - columns: [listT, listTravledDistance, posX, posY, vX, vY]
     */
     buildDistanceTable(arrayBezierPoints) {
         /**

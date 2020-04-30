@@ -102,16 +102,52 @@ export function main(world) {
   world.add(helicopter);
 
   /** 
+   * Place the bus track
+   */
+  const control_points = [
+    // turn into the front row between buildings
+    [-5, 10],
+    [-2, 15],
+    // in the front row between buildings
+    [3, 16],
+    [10, 16],
+    [18, 16],
+    // turn into the front row beside snowmen
+    [21, 13],
+    [22, 10],
+    [21, 7],
+    // in the front row beside snowmen
+    [18, 5],
+    [10, 5],
+    [3, 5],
+    // turn into the far row beside snowmen
+    [0, 3],
+    [-1, 0],
+    [0, -3],
+    // in the far row beside snowmen
+    [3, -5],
+    [10, -5],
+    [18, -5],
+    // turn into the far row between buildings    
+    [21, -7],
+    [22, -10],
+    [21, -13],
+    // in the far row between buildings
+    [18, -16],
+    [10, -16],
+    [3, -16],
+    // turn out from the far row between buildings
+    [-2, -15],
+    [-5, -10]
+  ];
+  let track = new Track({ arrayControlPoints: control_points });
+  world.add(track);
+
+  /** 
    * Place the bus
    */
   let bus = new Bus({ x: 10, y: 0, z: 0, scale: 1 });
   world.add(bus);
-
-  /** 
-   * Place the track
-   */
-  let track = new Track();
-  world.add(track);
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
