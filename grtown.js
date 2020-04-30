@@ -31,7 +31,7 @@ function grtown() {
   let world = new GrWorld({
     width: 800,
     height: 600,
-    groundplanesize: 20,
+    groundplanesize: 25,
     groundplanecolor: "silver"
   });
 

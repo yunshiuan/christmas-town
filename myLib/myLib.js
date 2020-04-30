@@ -31,6 +31,7 @@ export function main(world) {
    */
   const NUM_COL_HOUSES = 4;
   const INTERVAL_HOUSE = 5;
+  const INTERVAL_ROW = 8;
   /** 
    * Place wood houses
    */
@@ -52,10 +53,10 @@ export function main(world) {
    */
   for (let i = 0; i < NUM_COL_HOUSES; i++) {
     // far row
-    world.add(new BuildingBrick({ x: INTERVAL_HOUSE * i, z: -16, scale: 2 }));
+    world.add(new BuildingBrick({ x: INTERVAL_HOUSE * i, z: -10 - INTERVAL_ROW, scale: 2 }));
 
     // near row
-    let buildingBrick = new BuildingBrick({ x: INTERVAL_HOUSE * i, z: 16, scale: 2 });
+    let buildingBrick = new BuildingBrick({ x: INTERVAL_HOUSE * i, z: 10 + INTERVAL_ROW, scale: 2 });
     buildingBrick.objects[0].rotateY(Math.PI / 2 * 2);
     buildingBrick.objects[0].translateX(-buildingBrick.width * 2);
     world.add(buildingBrick);
