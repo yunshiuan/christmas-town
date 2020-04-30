@@ -21,7 +21,8 @@ import { Track } from "./track.js";
 import { Tree } from "./tree.js";
 import { MiniLoader } from "./miniloader.js"
 import { cubeTextureHelp } from "./skybox.js";
-// import { SimpleHouse } from "../../examples/house.js"
+import * as T from "../../libs/CS559-THREE/build/three.module.js";
+
 /**
  * 
  * @param {GrWorld} world 
@@ -197,8 +198,8 @@ export function main(world) {
   const tree_positions = [
     // far (the construction site)
     [tree_far_pos_x - 4, tree_far_pos_z - 5],
-    [tree_far_pos_x, tree_far_pos_z - 3],
-    [tree_far_pos_x - 2, tree_far_pos_z],
+    // [tree_far_pos_x, tree_far_pos_z - 3],
+    // [tree_far_pos_x - 2, tree_far_pos_z],
     [tree_far_pos_x - 5, tree_far_pos_z],
     [tree_far_pos_x - 3, tree_far_pos_z + 4],
     // near (the amusement park)
@@ -217,7 +218,28 @@ export function main(world) {
       })
     );
   }
+  // add fallen trees in the construction site
+  let fallenTreeA = new Tree(
+    {
+      x: tree_far_pos_x - 2,
+      z: tree_far_pos_z,
+      scale: 0.5
+    }
+  );
+  fallenTreeA.objects[0].rotation.x = (Math.PI / 2);
+  fallenTreeA.objects[0].rotation.z = (Math.PI / 4);
+  world.add(fallenTreeA);
 
+  let fallenTreeB = new Tree(
+    {
+      x: tree_far_pos_x,
+      z: tree_far_pos_z - 3,
+      scale: 0.5
+    }
+  );
+  fallenTreeB.objects[0].rotation.x = (Math.PI / 2);
+  fallenTreeB.objects[0].rotation.z = (Math.PI);
+  world.add(fallenTreeB);
   // /** Race Track - with three things racing around */
   // let track = new CircularTrack();
   // let tc1 = new TrackCube(track);
