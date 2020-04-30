@@ -185,7 +185,7 @@ export class Bus extends GrObject {
         frontWindow.position.z = 0 + front_window_width / 2;
         busGroup.add(frontWindow);
 
-        super(`Truck-${busObCtr++}`, busGroup);
+        super(`Bus-${busObCtr++}`, busGroup);
         /**
          * Scale the bus
          */
@@ -200,6 +200,8 @@ export class Bus extends GrObject {
         // lift the bus so that the wheels touch the ground
         this.whole_ob.position.y = params.y ? Number(params.y) + wheel_radius * scale : wheel_radius * scale;
         this.whole_ob.position.z = params.z ? Number(params.z) : 0;
+
+
         /**
          * Handle the track
          */
@@ -207,6 +209,21 @@ export class Bus extends GrObject {
         // the starting position on the track
         this.u = 0;
         this.speed = params.speed ? Number(params.speed) : 1;
+        /** 
+         * Make the bus rideable
+         */
+        // let axesHelper = new T.AxesHelper(5);
+        let ridePoint = new T.Object3D();
+        // ridePoint.add(axesHelper);
+
+        ridePoint.rotateX(H.degreesToRadians(90));
+        ridePoint.rotateY(H.degreesToRadians(270));
+        ridePoint.rotateZ(H.degreesToRadians(90));
+
+        ridePoint.position.set(5, 3, 0);
+
+        this.whole_ob.add(ridePoint);
+        this.rideable = ridePoint;
         // this.ridePoint = new T.Object3D();
         // this.ridePoint.translateY(0.5);
         // this.objects[0].add(this.ridePoint);

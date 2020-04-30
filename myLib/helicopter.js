@@ -58,7 +58,6 @@ export class Helicopter extends GrObject {
         this.originZ = posZ;
         this.timer = 0;
 
-        // make the first horse rideable
         // let axesHelper = new T.AxesHelper(5);
         let ridePoint = new T.Object3D();
         // ridePoint.add(axesHelper);
