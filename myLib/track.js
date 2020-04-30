@@ -25,7 +25,8 @@ export class Track extends GrObject {
         /** 
          * Constants
          */
-        const material = new T.LineBasicMaterial({ color: 0xff0000 });
+        const MATERIAL_CURVE = new T.LineBasicMaterial({ color: 0xff0000 });
+        const MATERIAL_POINT = new T.MeshStandardMaterial({ color: "black" });
         let arrayControlPoints;
         if (!params.arrayControlPoints) {
             const INIT_HEIGHT = 3;
@@ -52,7 +53,7 @@ export class Track extends GrObject {
         this.distanceTable = this.buildDistanceTable(arrayBezierPoints);
 
         // build the track
-        this.buildTrack(arrayBezierPoints, group, material);
+        this.buildTrack(arrayBezierPoints, group, MATERIAL_CURVE, MATERIAL_POINT);
 
         this.arrayControlPoints = arrayControlPoints;
         this.arrayBezierPoints = arrayBezierPoints;
@@ -62,10 +63,12 @@ export class Track extends GrObject {
      *
      * @param {Array<Array<Array<number>>>} arrayBezierPoints - the array of the controls point of each cubic Bezier curve segment     
      * @param {T.Group} group - the group of the track
-     * @param {T.Material} material - the material of the track
+     * @param {T.Material} MATERIAL_CURVE - the material of the track
+     * @param {T.Material} material_point - the material of the control points     
      * @returns {T.Group} - the group of the track
      */
-    buildTrack(arrayBezierPoints, group, material) {
+    buildTrack(arrayBezierPoints, group, MATERIAL_CURVE, material_point) {
+        let geometry_point;
         for (let segmentIndex = 0; segmentIndex < arrayBezierPoints.length; segmentIndex++) {
             let segmentControlPoints = arrayBezierPoints[segmentIndex];
             let curve = new T.CubicBezierCurve3(
@@ -75,8 +78,21 @@ export class Track extends GrObject {
                 new T.Vector3(segmentControlPoints[3][0], segmentControlPoints[3][1], 0)
             );
             let points = curve.getPoints(50);
-            let geometry = new T.BufferGeometry().setFromPoints(points);
-            let curveObject = new T.Line(geometry, material);
+            let geometry_curve = new T.BufferGeometry().setFromPoints(points);
+            let curveObject = new T.Line(geometry_curve, MATERIAL_CURVE);
+
+            // also add the control points 
+            // - only draw the control points that are interpolated
+            // -- which is the first and the last control point of the bezier spline
+            geometry_point = new T.SphereBufferGeometry(0.3);
+            for (let control_point_index = 0; control_point_index < segmentControlPoints.length; control_point_index++) {
+                let controlPointObject = new T.Mesh(geometry_point, material_point);
+                controlPointObject.position.set(
+                    segmentControlPoints[control_point_index][0],
+                    segmentControlPoints[control_point_index][1],
+                    0);
+                group.add(controlPointObject);
+            }
             group.add(curveObject);
         }
         return group;
