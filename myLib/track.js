@@ -2,8 +2,7 @@
 // @ts-check
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
-import { ObjGrObject } from "../../libs/CS559-Framework/loaders.js";
-import { Group } from "../../libs/CS559-THREE/build/three.module.js";
+// import { ObjGrObject } from "../../libs/CS559-Framework/loaders.js";
 
 let trackCtr = 0;
 // A track built with cubic cardinal spline (drawn with Bezier curves).

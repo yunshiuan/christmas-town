@@ -21,6 +21,8 @@ import { Track } from "./track.js";
 import { Tree } from "./tree.js";
 import { MiniLoader } from "./miniloader.js"
 import { cubeTextureHelp } from "./skybox.js";
+import { Mound } from "./mound.js";
+
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 
 /**
@@ -173,14 +175,21 @@ export function main(world) {
     z: construction_pos_z,
     scale: 0.5
   }));
+  // place the mound near the construction site
+  world.add(new Mound({
+    x: construction_pos_x,
+    z: construction_pos_z - 3,
+    scale: 0.3
+  }));
+
   /** 
    * The amusemnent park
    */
   const park_pos_x = -15;
   const park_pos_z = 15;
-  /** 
-   * Place the carousel
-   */
+
+  // Place the carousel
+
 
   world.add(new Carousel({
     x: park_pos_x,
