@@ -19,7 +19,7 @@ import { Helicopter } from "./helicopter.js";
 import { Bus } from "./bus.js";
 import { Track } from "./track.js";
 import { Tree } from "./tree.js";
-
+import { MiniLoader } from "./miniloader.js"
 import { cubeTextureHelp } from "./skybox.js";
 // import { SimpleHouse } from "../../examples/house.js"
 /**
@@ -91,12 +91,6 @@ export function main(world) {
   }
 
   /** 
-   * Place the carousel
-   */
-
-  world.add(new Carousel({ x: -10, scale: 0.7 }));
-
-  /** 
    * Place the helicopter
    */
   let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
@@ -157,6 +151,7 @@ export function main(world) {
   );
   world.add(bus);
 
+
   /**
    * Place the big tree
    */
@@ -166,16 +161,52 @@ export function main(world) {
       scale: 1.5
     });
   world.add(tree);
+  /** 
+   * The construction site
+   */
+  const construction_pos_x = -15;
+  const construction_pos_z = -15;
+
+  world.add(new MiniLoader({
+    x: construction_pos_x,
+    z: construction_pos_z,
+    scale: 0.5
+  }));
+  /** 
+   * The amusemnent park
+   */
+  const park_pos_x = -15;
+  const park_pos_z = 15;
+  /** 
+   * Place the carousel
+   */
+
+  world.add(new Carousel({
+    x: park_pos_x,
+    z: park_pos_z,
+    scale: 0.7
+  }));
 
   /**
    * Place the forest
    */
+  const tree_far_pos_x = construction_pos_x - 3;
+  const tree_far_pos_z = construction_pos_z;
+  const tree_near_pos_x = park_pos_x + 9;
+  const tree_near_pos_z = park_pos_z;
   const tree_positions = [
-    [-12, 6],
-    [-15, 6],
-    [-10, 8],
-    [-12, 10],
-    [-14, 14],
+    // far (the construction site)
+    [tree_far_pos_x - 4, tree_far_pos_z - 5],
+    [tree_far_pos_x, tree_far_pos_z - 3],
+    [tree_far_pos_x - 2, tree_far_pos_z],
+    [tree_far_pos_x - 5, tree_far_pos_z],
+    [tree_far_pos_x - 3, tree_far_pos_z + 4],
+    // near (the amusement park)
+    [tree_near_pos_x - 4, tree_near_pos_z - 5],
+    [tree_near_pos_x - 2, tree_near_pos_z],
+    [tree_near_pos_x - 5, tree_near_pos_z],
+    [tree_near_pos_x, tree_near_pos_z + 2],
+    [tree_near_pos_x - 2, tree_near_pos_z + 4],
   ];
   for (let treeIndex = 0; treeIndex < tree_positions.length; treeIndex++) {
     world.add(new Tree(

@@ -2,7 +2,7 @@
 // @ts-check
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
-import { ObjGrObject } from "../../libs/CS559-Framework/loaders.js";
+// import { ObjGrObject } from "../../libs/CS559-Framework/loaders.js";
 import * as H from "./helperFun.js";
 
 let helicopterCtr = 0;
