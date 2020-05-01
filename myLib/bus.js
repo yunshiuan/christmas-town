@@ -223,11 +223,6 @@ export class Bus extends GrObject {
 
         this.whole_ob.add(ridePoint);
         this.rideable = ridePoint;
-        // this.ridePoint = new T.Object3D();
-        // this.ridePoint.translateY(0.5);
-        // this.objects[0].add(this.ridePoint);
-        // this.rideable = this.ridePoint;        
-
     }
     /**
      * The movement of the bus

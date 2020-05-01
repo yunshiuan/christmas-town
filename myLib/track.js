@@ -2,9 +2,12 @@
 // @ts-check
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
+import { degreesToRadians } from "./helperFun.js";
 // import { ObjGrObject } from "../../libs/CS559-Framework/loaders.js";
 
 let trackCtr = 0;
+let geometry_point;
+
 // A track built with cubic cardinal spline (drawn with Bezier curves).
 /**
  * @typedef trackProperties
@@ -12,6 +15,8 @@ let trackCtr = 0;
  * @property {Array<Array<number>>} [arrayControlPoints] 
  * - the array of the controls point that will be interpolated by the cubic splines.
  * - [cardinal spline control point index -> [posX, posY]]
+ * @property {boolean} [showControlPoints=false]
+ * - whether to visualize the control points or not
  */
 
 export class Track extends GrObject {
@@ -20,20 +25,26 @@ export class Track extends GrObject {
      */
     constructor(params = {}) {
         let group = new T.Group();
+        super(`track-${trackCtr++}`, group);
 
         /** 
          * Constants
          */
 
-        const MATERIAL_CURVE = new T.LineBasicMaterial({ color: "orange" });
-        // const MATERIAL_CURVE = new T.LineDashedMaterial({
-        //     color: "orange",
-        //     linewidth: 1,
-        //     scale: 10,
-        //     dashSize: 30,
-        //     gapSize: 1,
-        // });
-        const MATERIAL_POINT = new T.MeshStandardMaterial({ color: "black" });
+        const MATERIAL_CURVE = new T.LineBasicMaterial(
+            {
+                color: "orange",
+                side: T.DoubleSide
+                // linewidth: 100
+            }
+        );
+        const MATERIAL_POINT = new T.MeshStandardMaterial({
+            color: "black"
+            // side: T.DoubleSide
+        });
+        /** 
+         * Get inputs
+         */
         let arrayControlPoints;
         if (!params.arrayControlPoints) {
             const INIT_HEIGHT = 3;
@@ -51,7 +62,7 @@ export class Track extends GrObject {
         } else {
             arrayControlPoints = params.arrayControlPoints;
         }
-        super(`track-${trackCtr++}`, group);
+        this.showControlPoints = params.showControlPoints ? params.showControlPoints : false;
 
         // convert the cardinal control points to bezier control points
         let arrayBezierPoints = this.getArrayBezierControlPoints(arrayControlPoints);
@@ -103,32 +114,79 @@ export class Track extends GrObject {
      * @returns {T.Group} - the group of the track
      */
     buildTrack(arrayBezierPoints, group, material_curve, material_point) {
-        let geometry_point;
-        for (let segmentIndex = 0; segmentIndex < arrayBezierPoints.length; segmentIndex++) {
-            let segmentControlPoints = arrayBezierPoints[segmentIndex];
-            let curve = new T.CubicBezierCurve3(
-                new T.Vector3(segmentControlPoints[0][0], 0, segmentControlPoints[0][1]),
-                new T.Vector3(segmentControlPoints[1][0], 0, segmentControlPoints[1][1]),
-                new T.Vector3(segmentControlPoints[2][0], 0, segmentControlPoints[2][1]),
-                new T.Vector3(segmentControlPoints[3][0], 0, segmentControlPoints[3][1])
-            );
-            let points = curve.getPoints(50);
-            let geometry_curve = new T.BufferGeometry().setFromPoints(points);
-            let curveObject = new T.Line(geometry_curve, material_curve);
+        /** Constants */
+        const RAIL_TIES_INTERVAL = 4;
+        // const OFFSET_OUTER_TRACK = 1;
+        const RAIL_TIES_WIDTH = 0.5;
+        const RAIL_TIES_HEIGHT = 2;
+        let geometry_line;
+        /** 
+         * Draw the track
+         */
+        // iterate through the distance table
+        let numTies = 0;
+        for (let rowIndex = 0; rowIndex < this.distanceTable[0].length; rowIndex++) {
+            const traveledDistance = this.distanceTable[1][rowIndex];
+            const posX = this.distanceTable[2][rowIndex];
+            const posY = this.distanceTable[3][rowIndex];
+            const vX = this.distanceTable[4][rowIndex];
+            const vY = this.distanceTable[5][rowIndex];
 
-            // also add the control points 
-            // - only draw the control points that are interpolated
-            // -- which is the first (and the last) control point of the bezier spline
-            // -- no need to draw both the first and the last since it's a close track
-            geometry_point = new T.SphereBufferGeometry(0.3);
-            let controlPointObject = new T.Mesh(geometry_point, material_point);
-            controlPointObject.position.set(
-                segmentControlPoints[0][0],
-                0,
-                segmentControlPoints[0][1]
-            );
-            group.add(controlPointObject);
-            group.add(curveObject);
+            if (traveledDistance >= numTies * RAIL_TIES_INTERVAL) {
+                let angle = Math.atan2(-vY, vX);
+
+                if (!geometry_line) {
+                    geometry_line = new T.PlaneBufferGeometry(RAIL_TIES_HEIGHT, RAIL_TIES_WIDTH);
+
+                }
+                let mesh_line = new T.Mesh(geometry_line, material_curve);
+                mesh_line.position.set(
+                    posX,
+                    0.1,
+                    posY);
+                mesh_line.rotateY(angle);
+                mesh_line.rotateX(degreesToRadians(90));
+
+                group.add(mesh_line);
+                // let axesHelper = new T.AxesHelper(5);
+                // mesh_line.add(axesHelper);
+                numTies++;
+            }
+        }
+        /** 
+         * Draw the control points 
+         */
+        if (this.showControlPoints) {
+            for (let segmentIndex = 0; segmentIndex < arrayBezierPoints.length; segmentIndex++) {
+                let segmentControlPoints = arrayBezierPoints[segmentIndex];
+                let thisPoint = this.getBezierPos(
+                    segmentControlPoints[0],
+                    segmentControlPoints[1],
+                    segmentControlPoints[2],
+                    segmentControlPoints[3],
+                    0);
+
+                // - only draw the control points that are interpolated
+                // -- which is the first (and the last) control point of the bezier spline
+                // -- no need to draw both the first and the last since it's a close track
+                if (!geometry_point) {
+                    geometry_point = new T.SphereBufferGeometry(0.3);
+                    // geometry_point = new T.PlaneBufferGeometry(1.5, 0.5);
+                }
+                let controlPointObject = new T.Mesh(geometry_point, material_point);
+                controlPointObject.position.set(
+                    thisPoint.posX,
+                    0.1,
+                    thisPoint.posY
+                );
+                // let axesHelper = new T.AxesHelper(5);
+                // controlPointObject.add(axesHelper);
+                controlPointObject.rotateX(degreesToRadians(90));
+                controlPointObject.rotateZ(
+                    Math.atan2(thisPoint.vY, thisPoint.vX)
+                );
+                group.add(controlPointObject);
+            }
         }
         return group;
     }
