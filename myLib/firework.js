@@ -52,16 +52,16 @@ export class FireWorkShooter extends GrObject {
         // const GRAVITY_ACC = 0;
         const GRAVITY_ACC = 0.1;
         // shoot a ball every xxx second
-        const SHOOTING_PERIOD = 1.5;
+        const SHOOTING_PERIOD = 1;
 
         // Balls
         const BALL_RADIUS = 4;
         // // the color of the stroke of the balls
         // const STROKE_COL = "#FFFFFF";
         // color list for ball before explosion
-        const LIST_COL_CIRCLE = ["#00FF00", "#0000FF", "#FF0000"];
+        const LIST_COL_CIRCLE = ["#00FF00", "#0000FF", "#FF0000", "#6600ff"];
         // color list for exploded particles
-        const LIST_COL_PARTICLE = ["#99FF99", "#9999FF", "#FF9999"];
+        const LIST_COL_PARTICLE = ["#99FF99", "#9999FF", "#FF9999", "#d1b3ff"];
         // which color to start with
         // const INIT_COLOR_INDEX = 0;
         const INIT_V = 0.1; // initial shooting speed
@@ -156,9 +156,9 @@ export class FireWorkShooter extends GrObject {
                 // expX: 0,
                 // expY: 10,
                 // expZ: 0,
-                vX: this.init_v * (0.3 + Math.random() * 0.5),
+                vX: this.init_v * (Math.random() * 2 - 1),
                 vY: this.init_v,
-                vZ: this.init_v * (0.3 + Math.random() * 0.5),
+                vZ: this.init_v * (Math.random() * 2 - 1),
                 radius: 0.1
             });
             // reset the timer
@@ -396,9 +396,9 @@ class FireworkParticle {
         this.posX = params.posX ? Number(params.posX) : 0;
         this.posY = params.posY ? Number(params.posY) : 0;
         this.posZ = params.posZ ? Number(params.posZ) : 0;
-        this.vX = params.vX ? Number(params.vX) : EXPLOSION_SPEED * 0.5 * (1 + Math.random());
-        this.vY = params.vY ? Number(params.vY) : EXPLOSION_SPEED * 0.5 * (1 + Math.random());
-        this.vZ = params.vZ ? Number(params.vZ) : EXPLOSION_SPEED * 0.5 * (1 + Math.random());
+        this.vX = params.vX ? Number(params.vX) : EXPLOSION_SPEED * (Math.random() * 2 - 1);
+        this.vY = params.vY ? Number(params.vY) : EXPLOSION_SPEED * (Math.random() * 2 - 0.5);
+        this.vZ = params.vZ ? Number(params.vZ) : EXPLOSION_SPEED * (Math.random() * 2 - 1);
         this.radius = params.radius ? Number(params.radius) : 1;
         this.scale = params.scale ? Number(params.scale) : 1;
         this.color = params.color ? String(params.color) : "orange";
