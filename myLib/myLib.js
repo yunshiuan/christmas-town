@@ -192,6 +192,7 @@ export function main(world) {
   world.add(new Mound({
     x: construction_pos_x,
     z: construction_pos_z - 3,
+    y: 0.3,
     scale: 0.3
   }));
 
@@ -205,7 +206,7 @@ export function main(world) {
 
 
   world.add(new Carousel({
-    x: park_pos_x,
+    x: park_pos_x - 5,
     z: park_pos_z,
     scale: 0.7
   }));
@@ -249,6 +250,7 @@ export function main(world) {
     {
       x: tree_far_pos_x - 2,
       z: tree_far_pos_z,
+      y: 0.5,
       scale: 0.5
     }
   );
@@ -260,6 +262,7 @@ export function main(world) {
     {
       x: tree_far_pos_x,
       z: tree_far_pos_z - 3,
+      y: 0.3,
       scale: 0.5
     }
   );

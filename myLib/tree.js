@@ -87,7 +87,7 @@ export class Tree extends GrObject {
             crownHeight += STEM_HEIGHT * 0.2;
         }
 
-        super(`track-${treeCtr++}`, treeGroup);
+        super(`tree-${treeCtr++}`, treeGroup);
         // save the fields
         this.posX = posX;
         this.posY = posY;

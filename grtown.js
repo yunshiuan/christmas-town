@@ -42,9 +42,11 @@ function grtown() {
    */
   // use my customized ground plane
   let groundPlane = new GroundPlane({
+    y: 0,
     width: 50,
     height: 50,
-    color: "white"
+    // color is defined by the color map
+    // color: "white"
   });
   let world = new GrWorld({
     // canvas size (pixels)

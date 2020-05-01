@@ -2,10 +2,13 @@
 // @ts-check
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
+import { shaderMaterial } from "../../libs/CS559-Framework/shaderHelper.js";
+
 import * as H from "./helperFun.js";
+import { Material } from "../../libs/CS559-THREE/build/three.module.js";
 
 let GroundPlaneObCtr = 0;
-// A fork-lift
+let material;
 /**
  * @typedef GroundPlaneProperties
  * @type {object}
@@ -30,8 +33,31 @@ export class GroundPlane extends GrObject {
         const height = params.height ? Number(params.height) : 25;
         const thickness = params.thickness ? Number(params.thickness) : 0.1;
         const color = params.color ? String(params.color) : "white";
-        let geom = new T.BoxGeometry(width, thickness, height);
-        let material = new T.MeshStandardMaterial({ color: color, roughness: 0.9 });
+        let geom = new T.BoxBufferGeometry(width, thickness, height, 10, 1, 10);
+        // let material = new T.MeshStandardMaterial({ color: color, roughness: 0.9 });
+        // Use displacement map
+        if (!material) {
+            let color_map = new T.TextureLoader().load("./images/ground_color_map.png");
+            let height_map = new T.TextureLoader().load("./images/ground_height_map.png");
+            let unis = T.UniformsLib.lights;
+            material = shaderMaterial("./shaders/groundPlane.vs", "./shaders/groundPlane.fs",
+                {
+                    side: T.DoubleSide,
+                    lights: true,
+                    uniforms: unis
+                });
+            material.uniforms.heightmap = { value: height_map };
+            material.uniforms.colormap = { value: color_map };
+            // material = shaderMaterial(
+            //     "./shaders/groundPlane.vs", "./shaders/groundPlane.fs", {
+            //     side: T.DoubleSide,
+            //     uniforms: {
+            //         heightmap: { value: image },
+            //         colormap: { value: image },
+            //     },
+            // });
+        }
+
         let mesh = new T.Mesh(geom, material);
         super(`groundPlane-${GroundPlaneObCtr++}`, mesh);
         /**
