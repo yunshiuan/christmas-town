@@ -50,7 +50,7 @@ export class FireWorkShooter extends GrObject {
         // Global
         // Gravitational acceleration
         // const GRAVITY_ACC = 0;
-        const GRAVITY_ACC = 0.0015;
+        const GRAVITY_ACC = 0.1;
         // shoot a ball every xxx second
         const SHOOTING_PERIOD = 1.5;
 
@@ -64,14 +64,13 @@ export class FireWorkShooter extends GrObject {
         const LIST_COL_PARTICLE = ["#99FF99", "#9999FF", "#FF9999"];
         // which color to start with
         // const INIT_COLOR_INDEX = 0;
-        const INIT_V = 10; // initial shooting speed
+        const INIT_V = 0.1; // initial shooting speed
         // probability of shooting a random ball
         const PROP_RANDOM_SHOOT = 0.03;
 
-
         // Particles
         // //  fading rate (alpha value)
-        const FADING_RATE = 0.03;
+        const FADING_RATE = 0.008;
 
         // list of the balls
         /**@type {Array<FireworkBall>} */
@@ -124,9 +123,6 @@ export class FireWorkShooter extends GrObject {
             posX: params.posX,
             posY: params.posY,
             posZ: params.posZ,
-            // expX: params.expX,
-            // expY: params.expY,
-            // expZ: params.expZ,
             vX: params.vX,
             vY: params.vY,
             vZ: params.vZ,
@@ -159,9 +155,9 @@ export class FireWorkShooter extends GrObject {
                 // expX: 0,
                 // expY: 10,
                 // expZ: 0,
-                vX: 0,
-                vY: 0.1,
-                vZ: 0,
+                vX: this.init_v * (0.3 + Math.random() * 0.5),
+                vY: this.init_v,
+                vZ: this.init_v * (0.3 + Math.random() * 0.5),
                 radius: 0.1
             });
             // reset the timer
@@ -180,11 +176,11 @@ export class FireWorkShooter extends GrObject {
             if (ball.timer < ball.preexplosion_duration) {
                 // Update the position of the ball
                 // include the effect of gravity
-                // let grativityMove = this.gravity_acc * ball.timer;
+                let grativityMove = this.gravity_acc * ball.timer;
                 // increase the travel duration
                 // ball.timer += 1;
                 ball.posX += (ball.vX);
-                ball.posY += (ball.vY);
+                ball.posY += (ball.vY - grativityMove);
                 ball.posZ += (ball.vZ);
                 ball.ball_obj.position.set(ball.posX, ball.posY, ball.posZ);
                 ball.timer += (16 / 1000);
@@ -197,7 +193,7 @@ export class FireWorkShooter extends GrObject {
                 // remove the ball
                 this.scene.remove(ball.ball_obj);
                 // ball.ball_obj.visible = false;
-                // this.listBalls.splice(ballIndex, 1);
+                this.listBalls.splice(ballIndex, 1);
             }
         }
         /**  
@@ -214,7 +210,8 @@ export class FireWorkShooter extends GrObject {
                 // increase the travel duration
                 particle.timer += 1;
                 particle.particle_obj.position.x += particle.vX;
-                particle.particle_obj.position.y += (particle.vY - grativityMove);
+                // the gravity effect is weaker due to larger air resistance for particles
+                particle.particle_obj.position.y += (particle.vY - grativityMove * 0.01);
                 particle.particle_obj.position.z += particle.vZ;
                 if (particle.alpha >= 0) {
                     particle.alpha -= this.fading_rate;
@@ -290,7 +287,7 @@ class FireworkBall {
         // the flying duration after shooting
         this.timer = 0;
         // how long the ball exists before it explodes
-        const PREEXPLOSION_DURATION = 2;
+        const PREEXPLOSION_DURATION = 1;
         this.preexplosion_duration = PREEXPLOSION_DURATION;
         // to store the particles that this ball will become after explosion
         /**@type {Array<FireworkParticle>} */
@@ -343,6 +340,7 @@ class FireworkBall {
             particle.posX = this.posX;
             particle.posY = this.posY;
             particle.posZ = this.posZ;
+            particle.timer = 0;
             particle.updatePos();
             // posX: this.expX, posY: this.expY, posZ: this.expZ,
 
@@ -410,6 +408,7 @@ class FireworkParticle {
         if (!particle_material) {
             particle_material = new T.MeshStandardMaterial({
                 color: this.color,
+                // emissive: 0.3,
                 transparent: true,
                 opacity: this.alpha,
                 roughness: 0.9,
