@@ -317,20 +317,5 @@ export class MiniLoader extends GrObject {
                 break;
             default:
         }
-        // this.whole_ob.position.x = paramValues[0];
-        // this.whole_ob.position.z = paramValues[1];
-        // // [-90,90]
-        // this.whole_ob.rotation.y = degreesToRadians(paramValues[2]);
-        // // [55,90]
-        // this.arm.rotation.z = degreesToRadians(-paramValues[3]);
-        // // [-40, 30]
-        // this.bucket.rotation.z = degreesToRadians(-paramValues[4]);
     }
-    // update(paramValues) {
-    //     this.whole_ob.position.x = paramValues[0];
-    //     this.whole_ob.position.z = paramValues[1];
-    //     this.whole_ob.rotation.y = degreesToRadians(paramValues[2]);
-    //     this.arm.rotation.z = degreesToRadians(-paramValues[3]);
-    //     this.bucket.rotation.z = degreesToRadians(-paramValues[4]);
-    // }
 }

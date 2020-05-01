@@ -8,10 +8,10 @@
 
 import { GrWorld } from "../../libs/CS559-Framework/GrWorld.js";
 // import { SimpleHouse } from "../../examples/house.js";
-import { CircularTrack, TrackCube, TrackCar } from "../../examples/track.js";
+// import { CircularTrack, TrackCube, TrackCar } from "../../examples/track.js";
 // import { Helicopter, Helipad } from "../../examples/helicopter.js";
-import { ShinySculpture } from "../../examples/shinySculpture.js";
-import { MorphTest } from "../../examples/morph.js";
+// import { ShinySculpture } from "../../examples/shinySculpture.js";
+// import { MorphTest } from "../../examples/morph.js";
 import { BuildingWood, BuildingBrick } from "./building.js";
 import { Snowman } from "./snowman.js";
 import { Carousel } from "./carousel.js";
@@ -19,9 +19,10 @@ import { Helicopter } from "./helicopter.js";
 import { Bus } from "./bus.js";
 import { Track } from "./track.js";
 import { Tree } from "./tree.js";
-import { MiniLoader } from "./miniloader.js"
+import { MiniLoader } from "./miniloader.js";
 import { cubeTextureHelp } from "./skybox.js";
 import { Mound } from "./mound.js";
+import { FireWorkShooter } from "./firework.js"
 
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 
@@ -98,6 +99,13 @@ export function main(world) {
    */
   let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
   world.add(helicopter);
+  /**
+   * Place the firework shootet on the helicopter
+   */
+  let fireWorkShooter = new FireWorkShooter({
+    scene:world.scene
+  });
+  world.add(fireWorkShooter);
 
   /** 
    * Place the bus track
