@@ -23,7 +23,6 @@ export class GroundPlane extends GrObject {
      * @param {GroundPlaneProperties} params
      */
     constructor(params = {}) {
-        // let planeGroup = new T.Group();
         /**
          * Get inputs
          */

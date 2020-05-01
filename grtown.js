@@ -51,6 +51,8 @@ function grtown() {
     width: 800,
     height: 600,
     groundplane: groundPlane,
+    lookfrom: new T.Vector3(groundPlane.width * 0.6, 30, groundPlane.height),
+    lookat: new T.Vector3(0, 0, 0),
     // groundplanesize: 25,
     // groundplanecolor: "white",
     lights: [dir_light, amb]
