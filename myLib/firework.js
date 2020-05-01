@@ -17,6 +17,9 @@ let fireworkCtr = 0;
  * @property {T.Scene} [scene] 
  * - this is where the balls and particles will be added to because they should live in 
  * the world coordinate rather than the shooter's coordinate (which could be moving).
+ * @property {GrObject} [base]   
+ * - the basis where the firework shooter will be installed on. Note that this object should have
+ * a getPosition() function.
  */
 export class FireWorkShooter extends GrObject {
     /**
@@ -24,13 +27,23 @@ export class FireWorkShooter extends GrObject {
      */
     constructor(params = {}) {
         let shooterGroup = new T.Group();
+        super(`firework-${fireworkCtr++}`, shooterGroup);
+        this.shooterGroup = shooterGroup;
+
         /**
          * Inputs
          */
-        const posX = params.x ? Number(params.x) : 0;
-        const posY = params.y ? Number(params.y) : 0;
-        const posZ = params.z ? Number(params.z) : 0;
-        const scale = params.scale ? Number(params.scale) : 1;
+        this.posX = params.x ? Number(params.x) : 0;
+        this.posY = params.y ? Number(params.y) : 0;
+        this.posZ = params.z ? Number(params.z) : 0;
+        this.scale = params.scale ? Number(params.scale) : 1;
+        this.scene = params.scene;
+        if (params.base) {
+            this.base = params.base;
+            // @ts-ignore
+            this.basePos = this.base.getPosition();
+            this.updatePos(this.base);
+        }
         /** 
         * Constants
         */
@@ -55,6 +68,7 @@ export class FireWorkShooter extends GrObject {
         // probability of shooting a random ball
         const PROP_RANDOM_SHOOT = 0.03;
 
+
         // Particles
         // //  fading rate (alpha value)
         const FADING_RATE = 0.03;
@@ -65,15 +79,8 @@ export class FireWorkShooter extends GrObject {
         // the particles that are still on the screen
         /**@type {Array<Array<FireworkParticle>>} */
         let listActiveParticles = [];
-        super(`firework-${fireworkCtr++}`, shooterGroup);
 
         // save the fields
-        this.scene = params.scene;
-        this.posX = posX;
-        this.posY = posY;
-        this.posZ = posZ;
-        this.shooterGroup = shooterGroup;
-        this.scale = scale;
 
         this.listBalls = listBalls;
         this.listActiveParticles = listActiveParticles;
@@ -86,12 +93,27 @@ export class FireWorkShooter extends GrObject {
         this.list_col_particle = LIST_COL_PARTICLE;
         this.timer = 0;
         this.shooting_freq = SHOOTING_PERIOD;
-
         // put the object in its place
-        this.shooterGroup.position.x = posX;
-        this.shooterGroup.position.y = posY;
-        this.shooterGroup.position.z = posZ;
-        this.shooterGroup.scale.set(scale, scale, scale);
+        if (!this.base) {
+            this.shooterGroup.position.x = this.posX;
+            this.shooterGroup.position.y = this.posY;
+            this.shooterGroup.position.z = this.posZ;
+        }
+        this.shooterGroup.scale.set(this.scale, this.scale, this.scale);
+    }
+    /**
+     * Update the position of thefirework shooter dynamically.
+     * @param {GrObject} [base]   
+     * - the basis where the firework shooter will be installed on.
+     * @memberof FireWorkShooter
+     */
+    updatePos(base) {
+        // @ts-ignore
+        this.basePos = this.base.getPosition();
+        this.shooterGroup.position.set(this.basePos.x, this.basePos.y, this.basePos.z);
+        this.posX = this.basePos.x;
+        this.posY = this.basePos.y;
+        this.posZ = this.basePos.z;
     }
     /**
      * Create a ball
@@ -102,9 +124,9 @@ export class FireWorkShooter extends GrObject {
             posX: params.posX,
             posY: params.posY,
             posZ: params.posZ,
-            expX: params.expX,
-            expY: params.expY,
-            expZ: params.expZ,
+            // expX: params.expX,
+            // expY: params.expY,
+            // expZ: params.expZ,
             vX: params.vX,
             vY: params.vY,
             vZ: params.vZ,
@@ -123,17 +145,20 @@ export class FireWorkShooter extends GrObject {
      * @memberof FireWorkShooter
      */
     tick(step, timeOfDay) {
-
+        // move the shooter with the base
+        if (this.base) {
+            this.updatePos(this.base);
+        }
         // shoot a ball every shooting_freq
         // - 0: the very beginning
         if (this.timer == 0 || this.timer >= this.shooting_freq) {
             this.shootBall({
-                posX: 0,
-                posY: 0,
-                posZ: 0,
-                expX: 0,
-                expY: 5,
-                expZ: 0,
+                posX: this.posX,
+                posY: this.posY,
+                posZ: this.posZ,
+                // expX: 0,
+                // expY: 10,
+                // expZ: 0,
                 vX: 0,
                 vY: 0.1,
                 vZ: 0,
@@ -152,16 +177,17 @@ export class FireWorkShooter extends GrObject {
             /** 
              * Before the ball reaches the explosion height
              */
-            if (ball.posY < ball.expY) {
+            if (ball.timer < ball.preexplosion_duration) {
                 // Update the position of the ball
                 // include the effect of gravity
-                let grativityMove = this.gravity_acc * ball.timer;
+                // let grativityMove = this.gravity_acc * ball.timer;
                 // increase the travel duration
-                ball.timer += 1;
+                // ball.timer += 1;
                 ball.posX += (ball.vX);
                 ball.posY += (ball.vY);
                 ball.posZ += (ball.vZ);
                 ball.ball_obj.position.set(ball.posX, ball.posY, ball.posZ);
+                ball.timer += (16 / 1000);
             } else {
                 /**
                  * When the ball reaches the explosion height
@@ -169,8 +195,9 @@ export class FireWorkShooter extends GrObject {
                 // extract the particles that the ball stores
                 this.listActiveParticles.push(ball.explode());
                 // remove the ball
-                ball.ball_obj.visible = false;
-                this.listBalls.splice(ballIndex, 1);
+                this.scene.remove(ball.ball_obj);
+                // ball.ball_obj.visible = false;
+                // this.listBalls.splice(ballIndex, 1);
             }
         }
         /**  
@@ -199,7 +226,8 @@ export class FireWorkShooter extends GrObject {
             if (eplodedBallParticles[0].alpha <= 0) {
                 // make the T objects of the particles disapper
                 eplodedBallParticles.forEach(particle => {
-                    particle.particle_obj.visible = false;
+                    // particle.particle_obj.visible = false;
+                    this.scene.remove(particle.particle_obj);
                 });
                 // remove the particles
                 this.listActiveParticles.splice(explodedBallIndex, 1);
@@ -207,8 +235,6 @@ export class FireWorkShooter extends GrObject {
 
         }
     }
-
-
 }
 
 // A firework ball
@@ -263,6 +289,9 @@ class FireworkBall {
         this.num_particles = NUM_PARTICLES;
         // the flying duration after shooting
         this.timer = 0;
+        // how long the ball exists before it explodes
+        const PREEXPLOSION_DURATION = 2;
+        this.preexplosion_duration = PREEXPLOSION_DURATION;
         // to store the particles that this ball will become after explosion
         /**@type {Array<FireworkParticle>} */
         this.listParticles = [];
@@ -309,6 +338,14 @@ class FireworkBall {
          */
         for (let particleIndex = 0; particleIndex < this.listParticles.length; particleIndex++) {
             const particle = this.listParticles[particleIndex];
+
+            // start the particle at the current ball explosion position
+            particle.posX = this.posX;
+            particle.posY = this.posY;
+            particle.posZ = this.posZ;
+            particle.updatePos();
+            // posX: this.expX, posY: this.expY, posZ: this.expZ,
+
             this.scene.add(particle.particle_obj);
         }
         return this.listParticles;
@@ -389,6 +426,12 @@ class FireworkParticle {
          * Save the mesh as a field
          */
         this.particle_obj = particle_mesh;
-
+    }
+    /**
+     * Update the position of the particle object based on the position information
+     * @memberof FireworkParticle
+     */
+    updatePos() {
+        this.particle_obj.position.set(this.posX, this.posY, this.posZ);
     }
 }

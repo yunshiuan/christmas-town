@@ -8,7 +8,7 @@ import * as H from "./helperFun.js";
 let helicopterCtr = 0;
 /**
  * @class Helicopter
- * @typedef CarouselProperties
+ * @typedef HelicopterProperties
  * @type {object}
  * @property {number} [x=0]
  * @property {number} [y=0]
@@ -18,7 +18,7 @@ let helicopterCtr = 0;
  */
 export class Helicopter extends GrObject {
     /**
-     * @param {CarouselProperties} params
+     * @param {HelicopterProperties} params
      */
     constructor(params = {}) {
         /**

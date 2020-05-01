@@ -25,6 +25,7 @@ import { Mound } from "./mound.js";
 import { FireWorkShooter } from "./firework.js"
 
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
+import { AxesHelper } from "../../libs/CS559-THREE/build/three.module.js";
 
 /**
  * 
@@ -100,12 +101,17 @@ export function main(world) {
   let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
   world.add(helicopter);
   /**
-   * Place the firework shootet on the helicopter
+   * Place the firework shooter on the helicopter
    */
   let fireWorkShooter = new FireWorkShooter({
-    scene:world.scene
+    scene: world.scene,
+    base: helicopter
+    // x: 10
   });
+  let axesHelper = new T.AxesHelper(5);
+  fireWorkShooter.objects[0].add(axesHelper);
   world.add(fireWorkShooter);
+  // helicopter.objects[0].add(fireWorkShooter.objects[0]);
 
   /** 
    * Place the bus track
@@ -161,7 +167,6 @@ export function main(world) {
     }
   );
   world.add(bus);
-
 
   /**
    * Place the big tree
