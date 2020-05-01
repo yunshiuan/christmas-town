@@ -37,7 +37,7 @@ export class FireWorkShooter extends GrObject {
         // Global
         // Gravitational acceleration
         // const GRAVITY_ACC = 0;
-        const GRAVITY_ACC = 0.00015;
+        const GRAVITY_ACC = 0.0015;
 
         // Balls
         const BALL_RADIUS = 4;
@@ -62,6 +62,9 @@ export class FireWorkShooter extends GrObject {
         // list of the balls
         /**@type {Array<FireworkBall>} */
         let listBalls = [];
+        // the particles that are still on the screen
+        /**@type {Array<Array<FireworkParticle>>} */
+        let listActiveParticles = [];
         super(`firework-${fireworkCtr++}`, shooterGroup);
 
         // save the fields
@@ -73,6 +76,7 @@ export class FireWorkShooter extends GrObject {
         this.scale = scale;
 
         this.listBalls = listBalls;
+        this.listActiveParticles = listActiveParticles;
         this.prop_random_shoot = PROP_RANDOM_SHOOT;
         this.init_v = INIT_V;
         this.ball_radius = BALL_RADIUS;
@@ -134,7 +138,7 @@ export class FireWorkShooter extends GrObject {
      */
     tick(step, timeOfDay) {
         /**  
-         * Update the position of each fire ball
+         * Update the position of all firework balls (that haven't yet exploded)
          */
         for (let ballIndex = 0; ballIndex < this.listBalls.length; ballIndex++) {
             const ball = this.listBalls[ballIndex];
@@ -155,37 +159,49 @@ export class FireWorkShooter extends GrObject {
                 /**
                  * When the ball reaches the explosion height
                  */
-                // Make the particles visible
-                // - add the particle T objects as the ball's children
-                // if (ball.ball_obj.children.length == 0) {
-                ball.explode();
-                // }
+                // extract the particles that the ball stores
+                this.listActiveParticles.push(ball.explode());
                 // remove the ball
-                // ball.ball_obj.visible = false;
-                // this.listBalls.splice(ballIndex, 1);
-
-                // Move all the particles
-                ball.listParticles.forEach(
-                    /**
-                     * 
-                     * @param {FireworkParticle} particle 
-                     */
-                    function (particle) {
-                        // include the effect of gravity
-                        let grativityMove = this.gravity_acc * ball.timer;
-                        // increase the travel duration
-                        ball.timer += 1;
-                        particle.particle_obj.position.x += particle.vX;
-                        particle.particle_obj.position.y += (particle.vY - grativityMove);
-                        particle.particle_obj.position.z += particle.vZ;
-                        if (particle.alpha >= 0) {
-                            particle.alpha -= this.fading_rate;
-                        }
-                    }.bind(this));
+                ball.ball_obj.visible = false;
+                this.listBalls.splice(ballIndex, 1);
             }
         }
+        /**  
+         * Update the position of all the active particles (that haven't yet faded away)
+         */
+        // interate through the particles from different exploded balls
+        for (let explodedBallIndex = 0; explodedBallIndex < this.listActiveParticles.length; explodedBallIndex++) {
+            const eplodedBallParticles = this.listActiveParticles[explodedBallIndex];
+            // update the particle position
+            for (let particleIndex = 0; particleIndex < eplodedBallParticles.length; particleIndex++) {
+                const particle = eplodedBallParticles[particleIndex];
+                // include the effect of gravity
+                let grativityMove = this.gravity_acc * particle.timer;
+                // increase the travel duration
+                particle.timer += 1;
+                particle.particle_obj.position.x += particle.vX;
+                particle.particle_obj.position.y += (particle.vY - grativityMove);
+                particle.particle_obj.position.z += particle.vZ;
+                if (particle.alpha >= 0) {
+                    particle.alpha -= this.fading_rate;
+                    // @ts-ignore
+                    particle.particle_obj.material.opacity = particle.alpha;
+                }
+            }
+            // remove the particles of this exploded ball from the list if already faded away
+            if (eplodedBallParticles[0].alpha <= 0) {
+                // make the T objects of the particles disapper
+                eplodedBallParticles.forEach(particle => {
+                    particle.particle_obj.visible = false;
+                });
+                // remove the particles
+                this.listActiveParticles.splice(explodedBallIndex, 1);
+            }
 
+        }
     }
+
+
 }
 
 // A firework ball
@@ -277,7 +293,7 @@ class FireworkBall {
     }
     /**
      * Explode the ball and launch particles.
-     *
+     * @returns {Array<FireworkParticle>} - the particles the ball exploded into
      * @memberof FireworkBall
      */
     explode() {
@@ -288,6 +304,7 @@ class FireworkBall {
             const particle = this.listParticles[particleIndex];
             this.scene.add(particle.particle_obj);
         }
+        return this.listParticles;
     }
 }
 
