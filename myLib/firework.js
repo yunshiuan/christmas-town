@@ -38,6 +38,8 @@ export class FireWorkShooter extends GrObject {
         // Gravitational acceleration
         // const GRAVITY_ACC = 0;
         const GRAVITY_ACC = 0.0015;
+        // shoot a ball every xxx second
+        const SHOOTING_PERIOD = 1.5;
 
         // Balls
         const BALL_RADIUS = 4;
@@ -54,10 +56,8 @@ export class FireWorkShooter extends GrObject {
         const PROP_RANDOM_SHOOT = 0.03;
 
         // Particles
-        // const SIZE_PARTICLE = 2;
         // //  fading rate (alpha value)
         const FADING_RATE = 0.03;
-        // const EXPLOSION_SPEED = 10;
 
         // list of the balls
         /**@type {Array<FireworkBall>} */
@@ -84,28 +84,14 @@ export class FireWorkShooter extends GrObject {
         this.fading_rate = FADING_RATE;
         this.list_col_ball = LIST_COL_CIRCLE;
         this.list_col_particle = LIST_COL_PARTICLE;
-        // this.size_particle = SIZE_PARTICLE;
-        // this.explosion_speed = EXPLOSION_SPEED;
+        this.timer = 0;
+        this.shooting_freq = SHOOTING_PERIOD;
+
         // put the object in its place
         this.shooterGroup.position.x = posX;
         this.shooterGroup.position.y = posY;
         this.shooterGroup.position.z = posZ;
         this.shooterGroup.scale.set(scale, scale, scale);
-        /** 
-         * Shoot one ball
-         */
-        this.shootBall({
-            posX: 0,
-            posY: 0,
-            posZ: 0,
-            expX: 0,
-            expY: 5,
-            expZ: 0,
-            vX: 0,
-            vY: 0.1,
-            vZ: 0,
-            radius: 0.1
-        });
     }
     /**
      * Create a ball
@@ -137,6 +123,27 @@ export class FireWorkShooter extends GrObject {
      * @memberof FireWorkShooter
      */
     tick(step, timeOfDay) {
+
+        // shoot a ball every shooting_freq
+        // - 0: the very beginning
+        if (this.timer == 0 || this.timer >= this.shooting_freq) {
+            this.shootBall({
+                posX: 0,
+                posY: 0,
+                posZ: 0,
+                expX: 0,
+                expY: 5,
+                expZ: 0,
+                vX: 0,
+                vY: 0.1,
+                vZ: 0,
+                radius: 0.1
+            });
+            // reset the timer
+            this.timer = 0;
+        }
+        // update the timer
+        this.timer += (16 / 1000);
         /**  
          * Update the position of all firework balls (that haven't yet exploded)
          */
