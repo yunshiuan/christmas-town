@@ -100,6 +100,9 @@ export function main(world) {
    */
   let helicopter = new Helicopter({ x: 10, y: 15, z: 0, scale: 0.3 });
   world.add(helicopter);
+  // let axesHelper = new T.AxesHelper(15);
+  // helicopter.objects[0].add(axesHelper);
+
   /**
    * Place the firework shooter on the helicopter
    */

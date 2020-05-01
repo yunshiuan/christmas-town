@@ -52,7 +52,7 @@ export class FireWorkShooter extends GrObject {
         // const GRAVITY_ACC = 0;
         const GRAVITY_ACC = 0.1;
         // shoot a ball every xxx second
-        const SHOOTING_PERIOD = 0.8;
+        const SHOOTING_PERIOD = 1;
 
         // Balls
         const BALL_RADIUS = 4;
@@ -158,9 +158,9 @@ export class FireWorkShooter extends GrObject {
                 // expY: 10,
                 // expZ: 0,
                 vX: this.init_v * (Math.random() * 2 - 1),
-                vY: this.init_v,
+                vY: this.init_v * 1.5,
                 vZ: this.init_v * (Math.random() * 2 - 1),
-                radius: 0.1
+                radius: 0.2
             });
             // reset the timer
             this.timer = 0;
@@ -291,12 +291,12 @@ class FireworkBall {
         this.scene = params.scene;
         // other constants
         // the number of explosion particles
-        const NUM_PARTICLES = 40;
+        const NUM_PARTICLES = 80;
         this.num_particles = NUM_PARTICLES;
         // the flying duration after shooting
         this.timer = 0;
         // how long the ball exists before it explodes
-        const PREEXPLOSION_DURATION = 1;
+        const PREEXPLOSION_DURATION = 2;
         this.preexplosion_duration = PREEXPLOSION_DURATION;
         // to store the particles that this ball will become after explosion
         /**@type {Array<FireworkParticle>} */
