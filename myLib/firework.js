@@ -52,16 +52,17 @@ export class FireWorkShooter extends GrObject {
         // const GRAVITY_ACC = 0;
         const GRAVITY_ACC = 0.1;
         // shoot a ball every xxx second
-        const SHOOTING_PERIOD = 1;
+        const SHOOTING_PERIOD = 0.8;
 
         // Balls
         const BALL_RADIUS = 4;
         // // the color of the stroke of the balls
         // const STROKE_COL = "#FFFFFF";
         // color list for ball before explosion
-        const LIST_COL_CIRCLE = ["#00FF00", "#0000FF", "#FF0000", "#6600ff"];
+        const LIST_COL_CIRCLE = ["#00cc00", "#0000FF", "#FF0000", "#6600ff"];
         // color list for exploded particles
-        const LIST_COL_PARTICLE = ["#99FF99", "#9999FF", "#FF9999", "#d1b3ff"];
+        const LIST_COL_PARTICLE = LIST_COL_CIRCLE;
+        // const LIST_COL_PARTICLE = ["#99FF99", "#9999FF", "#FF9999", "#d1b3ff"];
         // which color to start with
         // const INIT_COLOR_INDEX = 0;
         const INIT_V = 0.1; // initial shooting speed
@@ -418,7 +419,7 @@ class FireworkParticle {
         // if (!particle_material) {
         let particle_material = new T.MeshStandardMaterial({
             color: this.color,
-            // emissive: 0.3,
+            emissive: this.color,
             transparent: true,
             opacity: this.alpha,
             roughness: 0.9,

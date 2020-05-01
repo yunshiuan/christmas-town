@@ -18,34 +18,59 @@
 import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
 import * as Helpers from "../libs/CS559-Libs/helpers.js";
 import { WorldUI } from "../libs/CS559-Framework/WorldUI.js";
+import * as T from "../libs/CS559-THREE/build/three.module.js";
 
 // import {main} from "../examples/main.js";
 import { main } from "./myLib/myLib.js";
+import { GroundPlane } from "./myLib/groundPlane.js";
 
-/**m
+/**
  * The Graphics Town Main -
  * This builds up the world and makes it go...
  */
 function grtown() {
-  // make the world
+  /** 
+   * Add lights
+   */
+  let dir_light = new T.DirectionalLight("#ff8000", 0.5);
+  dir_light.position.set(5, 3, 5);
+  dir_light.target.position.set(0, 0, 0);
+  let amb = new T.AmbientLight("white", 0.5);
+
+  /** 
+   * Make the world
+   */
+  // use my customized ground plane
+  let groundPlane = new GroundPlane({
+    width: 50,
+    height: 50,
+    color: "white"
+  });
   let world = new GrWorld({
+    // canvas size (pixels)
     width: 800,
     height: 600,
-    groundplanesize: 25,
-    groundplanecolor: "silver"
+    groundplane: groundPlane,
+    // groundplanesize: 25,
+    // groundplanecolor: "white",
+    lights: [dir_light, amb]
   });
 
-  // put stuff into the world
-  // this calls the example code (that puts a lot of objects into the world)
-  // you can look at it for reference, but do not use it in your assignment
+  /** 
+   * set up the world
+   */
   main(world);
 
-  // build and run the UI
-
+  /** 
+   * build and run the UI
+   */
   // only after all the objects exist can we build the UI
   // @ts-ignore       // we're sticking a new thing into the world
   world.ui = new WorldUI(world);
-  // now make it go!
+
+  /** 
+   * Animate the world
+   */
   world.go();
 }
 Helpers.onWindowOnload(grtown);
