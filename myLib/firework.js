@@ -119,6 +119,7 @@ export class FireWorkShooter extends GrObject {
      * @param {fireworkBallProperties} params
      */
     shootBall(params = {}) {
+        let colorIndex = Math.floor(Math.random() * this.list_col_ball.length);
         let newBall = new FireworkBall({
             posX: params.posX,
             posY: params.posY,
@@ -127,8 +128,8 @@ export class FireWorkShooter extends GrObject {
             vY: params.vY,
             vZ: params.vZ,
             radius: params.radius,
-            ballColor: this.list_col_ball[this.listBalls.length % this.list_col_ball.length],
-            particleColor: this.list_col_particle[this.listBalls.length % this.list_col_particle.length],
+            ballColor: this.list_col_ball[colorIndex],
+            particleColor: this.list_col_particle[colorIndex],
             scene: this.scene
         });
         this.listBalls.push(newBall);
@@ -190,6 +191,9 @@ export class FireWorkShooter extends GrObject {
                  */
                 // extract the particles that the ball stores
                 this.listActiveParticles.push(ball.explode());
+                // dispose the material                
+                // @ts-ignore
+                ball.ball_obj.material.dispose();
                 // remove the ball
                 this.scene.remove(ball.ball_obj);
                 // ball.ball_obj.visible = false;
@@ -225,8 +229,11 @@ export class FireWorkShooter extends GrObject {
                 eplodedBallParticles.forEach(particle => {
                     // particle.particle_obj.visible = false;
                     this.scene.remove(particle.particle_obj);
+                    // dispose the material
+                    // @ts-ignore
+                    particle.particle_obj.material.dispose();
                 });
-                // remove the particles
+                // remove the particles of this exploded ball
                 this.listActiveParticles.splice(explodedBallIndex, 1);
             }
 
@@ -235,7 +242,8 @@ export class FireWorkShooter extends GrObject {
 }
 
 // A firework ball
-let ball_material;
+// - each ball should have its own material because their colors could be different
+// let ball_material;
 let ball_geom;
 /**
  * @typedef fireworkBallProperties
@@ -282,7 +290,7 @@ class FireworkBall {
         this.scene = params.scene;
         // other constants
         // the number of explosion particles
-        const NUM_PARTICLES = 20;
+        const NUM_PARTICLES = 40;
         this.num_particles = NUM_PARTICLES;
         // the flying duration after shooting
         this.timer = 0;
@@ -299,13 +307,13 @@ class FireworkBall {
         if (!ball_geom) {
             ball_geom = new T.SphereBufferGeometry(this.radius, 6, 5);
         }
-        if (!ball_material) {
-            ball_material = new T.MeshStandardMaterial({
-                color: this.ballColor,
-                roughness: 0.9,
-                metalness: 0.3
-            });
-        }
+        // if (!ball_material) {
+        let ball_material = new T.MeshStandardMaterial({
+            color: this.ballColor,
+            roughness: 0.9,
+            metalness: 0.3
+        });
+        // }
         let ball_mesh = new T.Mesh(ball_geom, ball_material);
         this.ball_obj = ball_mesh;
         /** 
@@ -351,7 +359,9 @@ class FireworkBall {
 }
 
 // A particle in a firework ball
-let particle_material;
+// - each particle should have its own material because their fading processes are independent
+// and could have different color
+// let particle_material;
 let particle_geom;
 /**
  * @typedef fireworkParticleProperties
@@ -386,9 +396,9 @@ class FireworkParticle {
         this.posX = params.posX ? Number(params.posX) : 0;
         this.posY = params.posY ? Number(params.posY) : 0;
         this.posZ = params.posZ ? Number(params.posZ) : 0;
-        this.vX = params.vX ? Number(params.vX) : EXPLOSION_SPEED * Math.random();
-        this.vY = params.vY ? Number(params.vY) : EXPLOSION_SPEED * Math.random();
-        this.vZ = params.vZ ? Number(params.vZ) : EXPLOSION_SPEED * Math.random();
+        this.vX = params.vX ? Number(params.vX) : EXPLOSION_SPEED * 0.5 * (1 + Math.random());
+        this.vY = params.vY ? Number(params.vY) : EXPLOSION_SPEED * 0.5 * (1 + Math.random());
+        this.vZ = params.vZ ? Number(params.vZ) : EXPLOSION_SPEED * 0.5 * (1 + Math.random());
         this.radius = params.radius ? Number(params.radius) : 1;
         this.scale = params.scale ? Number(params.scale) : 1;
         this.color = params.color ? String(params.color) : "orange";
@@ -405,16 +415,16 @@ class FireworkParticle {
         if (!particle_geom) {
             particle_geom = new T.SphereBufferGeometry(this.radius, 6, 5);
         }
-        if (!particle_material) {
-            particle_material = new T.MeshStandardMaterial({
-                color: this.color,
-                // emissive: 0.3,
-                transparent: true,
-                opacity: this.alpha,
-                roughness: 0.9,
-                metalness: 0.3
-            });
-        }
+        // if (!particle_material) {
+        let particle_material = new T.MeshStandardMaterial({
+            color: this.color,
+            // emissive: 0.3,
+            transparent: true,
+            opacity: this.alpha,
+            roughness: 0.9,
+            metalness: 0.3
+        });
+        // }
         let particle_mesh = new T.Mesh(particle_geom, particle_material);
         /** 
          * Place the particles

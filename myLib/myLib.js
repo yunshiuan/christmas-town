@@ -108,8 +108,8 @@ export function main(world) {
     base: helicopter
     // x: 10
   });
-  let axesHelper = new T.AxesHelper(5);
-  fireWorkShooter.objects[0].add(axesHelper);
+  // let axesHelper = new T.AxesHelper(5);
+  // fireWorkShooter.objects[0].add(axesHelper);
   world.add(fireWorkShooter);
   // helicopter.objects[0].add(fireWorkShooter.objects[0]);
 
