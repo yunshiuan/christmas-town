@@ -28,6 +28,7 @@ import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { AxesHelper } from "../../libs/CS559-THREE/build/three.module.js";
 import { Pond } from "./pond.js";
 import { GrBall } from "./testBall.js";
+import { Truck } from "./truck.js";
 
 /**
  * 
@@ -174,7 +175,18 @@ export function main(world) {
     }
   );
   world.add(bus);
-
+  /** 
+    * Place the truck
+    */
+  let truck = new Truck(
+    {
+      x: 10, y: 0, z: 0,
+      scale: 1,
+      track: track,
+      speed: 2
+    }
+  );
+  world.add(truck);
   /**
    * Place the big tree
    */
