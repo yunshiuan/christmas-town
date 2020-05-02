@@ -35,7 +35,7 @@ function grtown() {
   let dir_light = new T.DirectionalLight("#ff8000", 0.5);
   dir_light.position.set(5, 3, 5);
   dir_light.target.position.set(0, 0, 0);
-  let amb = new T.AmbientLight("white", 0.5);
+  let amb = new T.AmbientLight("white", 0.7);
 
   /** 
    * Make the world

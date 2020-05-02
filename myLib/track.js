@@ -12,11 +12,14 @@ let geometry_point;
 /**
  * @typedef trackProperties
  * @type {object}
+ * @property {string} [name = "track"]
+ * @property {number} [y=0] 
  * @property {Array<Array<number>>} [arrayControlPoints] 
  * - the array of the controls point that will be interpolated by the cubic splines.
  * - [cardinal spline control point index -> [posX, posY]]
  * @property {boolean} [showControlPoints=false]
  * - whether to visualize the control points or not
+ * @property {T.CubeTexture} [envMap=false] - the skybox to reflect by the pond 
  */
 
 export class Track extends GrObject {
@@ -25,7 +28,8 @@ export class Track extends GrObject {
      */
     constructor(params = {}) {
         let group = new T.Group();
-        super(`track-${trackCtr++}`, group);
+        const name = params.name ? String(params.name) : 'track';
+        super(`${name}-${trackCtr++}`, group);
 
         /** 
          * Constants
@@ -63,6 +67,7 @@ export class Track extends GrObject {
             arrayControlPoints = params.arrayControlPoints;
         }
         this.showControlPoints = params.showControlPoints ? params.showControlPoints : false;
+        this.posY = params.y ? params.y : 0;
 
         // convert the cardinal control points to bezier control points
         let arrayBezierPoints = this.getArrayBezierControlPoints(arrayControlPoints);
@@ -71,12 +76,14 @@ export class Track extends GrObject {
         // - for arc-length parameterization for whatever is following the track
         this.distanceTable = this.buildDistanceTable(arrayBezierPoints);
 
+        this.envMap = params.envMap;
         // build the track
         this.buildTrack(arrayBezierPoints, group, MATERIAL_CURVE, MATERIAL_POINT);
 
         this.arrayControlPoints = arrayControlPoints;
         this.arrayBezierPoints = arrayBezierPoints;
         this.numSegments = arrayBezierPoints.length;
+        group.position.y = this.posY;
     }
     /**
      * Get the position and velocity of a given parameter value.

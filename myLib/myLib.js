@@ -22,10 +22,12 @@ import { Tree } from "./tree.js";
 import { MiniLoader } from "./miniloader.js";
 import { cubeTextureHelp } from "./skybox.js";
 import { Mound } from "./mound.js";
-import { FireWorkShooter } from "./firework.js"
+import { FireWorkShooter } from "./firework.js";
 
 import * as T from "../../libs/CS559-THREE/build/three.module.js";
 import { AxesHelper } from "../../libs/CS559-THREE/build/three.module.js";
+import { Pond } from "./pond.js";
+import { GrBall } from "./testBall.js";
 
 /**
  * 
@@ -53,7 +55,9 @@ export function main(world) {
     world.add(buildingWood);
   }
 
-
+  /** Add the skybox */
+  let skyBox = cubeTextureHelp("./images/");
+  world.scene.background = skyBox;
   /** 
    * Place brick houses
    */
@@ -180,6 +184,7 @@ export function main(world) {
       scale: 1.5
     });
   world.add(tree);
+
   /** 
    * The construction site
    */
@@ -199,6 +204,53 @@ export function main(world) {
     scale: 0.3
   }));
 
+  /**
+  * Add the pond
+  */
+  const pond_pos_x = construction_pos_x + 1;
+  const pond_pos_z = construction_pos_z + 10;
+  const pond_points = [
+    // right boundary
+    [pond_pos_x, pond_pos_z - 2],
+    [pond_pos_x + 1, pond_pos_z],
+    [pond_pos_x + 3, pond_pos_z + 2],
+    [pond_pos_x + 4, pond_pos_z + 5],
+    [pond_pos_x + 4, pond_pos_z + 7.5],
+    [pond_pos_x + 3, pond_pos_z + 9],
+    [pond_pos_x + 1, pond_pos_z + 11],
+
+    // left boundary
+    [pond_pos_x - 3, pond_pos_z + 9],
+    [pond_pos_x - 4, pond_pos_z + 7],
+    [pond_pos_x - 1, pond_pos_z + 5],
+    [pond_pos_x - 3, pond_pos_z],
+
+  ];
+  let pond = new Pond(
+    {
+      arrayControlPoints: pond_points,
+      // showControlPoints: true,
+      y: 0.6,
+      envMap: skyBox,
+      world: world
+    }
+  );
+  world.add(pond);
+  // world.add(new GrBall(
+  //   {
+  //     x: 20, size: 1,
+  //     // bumpMap: true,
+  //     envMap: true,
+  //     envMapTexture: skyBox
+  //   }
+  // ));
+  world.add(new Tree(
+    {
+      x: pond_pos_x + 2,
+      z: pond_pos_z - 3,
+      scale: 0.5
+    })
+  );
   /** 
    * The amusemnent park
    */
@@ -299,9 +351,6 @@ export function main(world) {
   // // these are testing objects
   // world.add(new ShinySculpture(world));
   // world.add(new MorphTest({ x: 10, y: 3, r: 2 }));
-
-  /** Add the skybox */
-  world.scene.background = cubeTextureHelp("./images/");
 }
 
 
