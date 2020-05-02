@@ -52,14 +52,14 @@ export class FireWorkShooter extends GrObject {
         // const GRAVITY_ACC = 0;
         const GRAVITY_ACC = 0.1;
         // shoot a ball every xxx second
-        const SHOOTING_PERIOD = 1;
+        const SHOOTING_PERIOD = 0.8;
 
         // Balls
         const BALL_RADIUS = 4;
         // // the color of the stroke of the balls
         // const STROKE_COL = "#FFFFFF";
         // color list for ball before explosion
-        const LIST_COL_CIRCLE = ["#00cc00", "#0000FF", "#FF0000", "#6600ff"];
+        const LIST_COL_CIRCLE = ["#00cc00", "#0000FF", "#ffcc00", "#FF0000", "#6600ff", "#003300"];
         // color list for exploded particles
         const LIST_COL_PARTICLE = LIST_COL_CIRCLE;
         // const LIST_COL_PARTICLE = ["#99FF99", "#9999FF", "#FF9999", "#d1b3ff"];
