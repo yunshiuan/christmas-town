@@ -201,102 +201,15 @@ export class Helicopter extends GrObject {
      */
     tick(step, timeOfDay) {
 
-        // // all the speeds are arbitrary, so we tune things here
-        // let deltaSlowed = step / 200;
-
-        // // spin the propellers
-        // for (let index = 0; index < this.propellers.length; index++) {
-        //     const propeller = this.propellers[index];
-        //     propeller.rotateY(deltaSlowed * 4);
-        //     // propeller.rotateOnWorldAxis(new T.Vector3(0, 1, 0), 0.3);
-        // }
-        // // // spin the rotor around - even when the helicopter is landed
-        // // this.rotor.rotateY(deltaSlowed * 4);
-
-        // // state machine - depending on state, do the right thing
-        // switch (this.state) {
-        //     case 0: // initialization
-        //         this.state = 1;
-        //         this.delay = 0;
-        //         break;
-        //     case 1: // ascend to altitude
-        //         this.group.position.y += deltaSlowed;
-        //         if (this.group.position.y >= this.altitude) {
-        //             this.group.position.y = this.altitude;
-        //             this.state = 4;
-        //             // pick a random helipad - must be different than where we are
-        //             let targets = this.pads.filter((obj) => obj != this.current);
-        //             let pick = Math.floor(Math.random() * targets.length);
-        //             this.current = targets[pick];
-        //             // compute the spin, before we start
-        //             let dx = this.current.mesh.position.x - this.group.position.x;
-        //             let dz = this.current.mesh.position.z - this.group.position.z;
-        //             let ds = Math.sqrt(dx * dx + dz * dz);
-        //             if (ds > 0) {
-        //                 // compute the goal angle
-        //                 this.goalangle = Math.atan2(dx, dz);
-        //                 // get the current angle
-        //                 let quat = new T.Quaternion();
-        //                 this.group.getWorldQuaternion(quat);
-        //                 let eu = new T.Euler();
-        //                 eu.setFromQuaternion(quat);
-        //                 this.currentangle = eu.y;
-        //                 this.state = 4;
-        //             } else {
-        //                 this.state = 5; // don't bother spinning
-        //             }
-        //         }
-        //         break;
-        //     case 2: // descend
-        //         this.group.position.y -= deltaSlowed;
-        //         if (this.group.position.y <= 0) {
-        //             this.group.position.y = 0;
-        //             this.state = 3;
-        //             this.delay = 1 + Math.random();
-        //         }
-        //         break;
-        //     case 3: // wait before takeoff
-        //         this.delay -= deltaSlowed;
-        //         if (this.delay < 0) {
-        //             this.state = 1; // take off again
-        //         }
-        //         break;
-        //     case 4: // rotate to point towards destination
-        //         let ad = this.goalangle - this.currentangle;
-        //         if (ad > 0.1) {
-        //             this.currentangle += 0.05;
-        //         } else if (ad < -0.1) {
-        //             this.currentangle -= 0.05;
-        //         } else {
-        //             this.state = 5;
-        //             this.currentangle = this.goalangle;
-        //         }
-        //         this.group.setRotationFromEuler(
-        //             new T.Euler(0, this.currentangle, 0)
-        //         );
-        //         break;
-        //     case 5: // fly to destination
-        //         let dx = this.current.mesh.position.x - this.group.position.x;
-        //         let dz = this.current.mesh.position.z - this.group.position.z;
-        //         let dst = Math.sqrt(dx * dx + dz * dz);
-        //         let ds = deltaSlowed * 1.5;
-        //         if (dst > ds) {
-        //             this.group.position.x += (dx * ds) / dst;
-        //             this.group.position.z += (dz * ds) / dst;
-        //         } else {
-        //             this.group.position.x = this.current.mesh.position.x;
-        //             this.group.position.z = this.current.mesh.position.z;
-        //             this.state = 2;
-        //         }
-        //         break;
-        // }
-
         /**
          * move in a circle
          */
         this.timer += this.speed;
         let nexPos =
         {
+            // x: this.originX,
+            // y: this.originY,
+            // z: this.originZ,
             x: this.originX + (5) * (Math.sin(2 * this.timer)),
             y: this.originY + (0) * (Math.sin(2 * this.timer)),
             z: this.originZ + (15) * (Math.sin(this.timer))

@@ -156,8 +156,8 @@ export class Pond extends Track {
         let pond_mesh = new T.Mesh(pond_geometry, MATERIAL_POND);
         pond_mesh.rotateX(degreesToRadians(90));
         group.add(pond_mesh);
-        let axesHelper = new T.AxesHelper(15);
-        group.add(axesHelper);
+        // let axesHelper = new T.AxesHelper(15);
+        // group.add(axesHelper);
         // group.rotateX(degreesToRadians(90));
         return group;
     }
