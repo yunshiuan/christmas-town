@@ -1,10 +1,12 @@
 ## Overview
 
+To view the project, please visit this page: [https://yunshiuan.github.io/christmas-town/](https://yunshiuan.github.io/christmas-town/)
+
 It's a small village during the Christmas time! The village has just been established so there is construction going on, reclaiming land from the forest. There is a amusement park and firework to celebrate the Christmas festival.
 
 The whole town was built and animated with JavaScript (THREE.js).
 
-This is based on my COMP SCI 559 final project at UW-Madison.
+_Note: This is based on my COMP SCI 559 final project at UW-Madison._
 
 ## Screenshots
 
