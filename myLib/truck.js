@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/THREE/build/three.module.js";
-import { GrObject } from "../../libs/Framework/GrObject.js";
-import { ObjGrObject } from "../../libs/Framework/loaders.js";
+import * as T from "../libs/THREE/build/three.module.js";
+import { GrObject } from "../libs/Framework/GrObject.js";
+import { ObjGrObject } from "../libs/Framework/loaders.js";
 import * as H from "./helperFun.js";
 import { Track } from "./track.js";
 
@@ -48,12 +48,12 @@ export class Truck extends GrObject {
             bevelSegments: 2
         };
         // textures
-        // let t_window = new T.TextureLoader().load("../images/car_window_texture.jpg");
+        // let t_window = new T.TextureLoader().load("Images/car_window_texture.jpg");
         // t_window.repeat.set(2, 2);
         // t_window.wrapS = T.MirroredRepeatWrapping;
         // t_window.wrapT = T.MirroredRepeatWrapping;
 
-        let t_container = new T.TextureLoader().load("./images/truck_container_texture.png");
+        let t_container = new T.TextureLoader().load("Images/truck_container_texture.png");
         t_container.repeat.set(1, 1);
         t_container.wrapS = T.MirroredRepeatWrapping;
         t_container.wrapT = T.MirroredRepeatWrapping;

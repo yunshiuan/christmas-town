@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/THREE/build/three.module.js";
-import { GrObject } from "../../libs/Framework/GrObject.js";
-import { ObjGrObject } from "../../libs/Framework/loaders.js";
+import * as T from "../libs/THREE/build/three.module.js";
+import { GrObject } from "../libs/Framework/GrObject.js";
+import { ObjGrObject } from "../libs/Framework/loaders.js";
 
 let carouselObCtr = 0;
 let horse_geometry;
@@ -108,7 +108,7 @@ export class Carousel extends GrObject {
         // load the horse object once for all
         let horseObj = new ObjGrObject(
             {
-                obj: '/objects/standing-horse.obj',
+                obj: 'objects/standing-horse.obj',
                 name: 'horse'
             }
         );

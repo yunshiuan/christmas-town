@@ -1,11 +1,11 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/THREE/build/three.module.js";
-import { GrObject } from "../../libs/Framework/GrObject.js";
-import { shaderMaterial } from "../../libs/Framework/shaderHelper.js";
+import * as T from "../libs/THREE/build/three.module.js";
+import { GrObject } from "../libs/Framework/GrObject.js";
+import { shaderMaterial } from "../libs/Framework/shaderHelper.js";
 
 import * as H from "./helperFun.js";
-import { Material } from "../../libs/THREE/build/three.module.js";
+import { Material } from "../libs/THREE/build/three.module.js";
 
 let GroundPlaneObCtr = 0;
 let material;
@@ -37,8 +37,8 @@ export class GroundPlane extends GrObject {
         // let material = new T.MeshStandardMaterial({ color: color, roughness: 0.9 });
         // Use displacement map
         if (!material) {
-            let color_map = new T.TextureLoader().load("./images/ground_color_map.png");
-            let height_map = new T.TextureLoader().load("./images/ground_height_map.png");
+            let color_map = new T.TextureLoader().load("Images/ground_color_map.png");
+            let height_map = new T.TextureLoader().load("Images/ground_height_map.png");
             let unis = T.UniformsLib.lights;
             material = shaderMaterial("./shaders/groundPlane.vs", "./shaders/groundPlane.fs",
                 {

@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/THREE/build/three.module.js";
-import { GrObject } from "../../libs/Framework/GrObject.js";
+import * as T from "../libs/THREE/build/three.module.js";
+import { GrObject } from "../libs/Framework/GrObject.js";
 let ballObCtr = 0;
 // A ball.
 /**
@@ -38,7 +38,7 @@ export class GrBall extends GrObject {
          */
         // the bump map
         if (params.bumpMap) {
-            let t_bump = new T.TextureLoader().load("./images/ballBumpMap.png");
+            let t_bump = new T.TextureLoader().load("Images/ballBumpMap.png");
             t_bump.repeat.set(2, 1);
             t_bump.wrapS = T.RepeatWrapping;
             t_bump.needsUpdate = true;
@@ -47,7 +47,7 @@ export class GrBall extends GrObject {
         }
         // the normal map
         if (params.normalMap) {
-            let t_normal = new T.TextureLoader().load("./images/ballNormalMap.png");
+            let t_normal = new T.TextureLoader().load("Images/ballNormalMap.png");
             t_normal.repeat.set(2, 1);
             t_normal.wrapS = T.RepeatWrapping;
             t_normal.needsUpdate = true;

@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/THREE/build/three.module.js";
-import { GrObject } from "../../libs/Framework/GrObject.js";
+import * as T from "../libs/THREE/build/three.module.js";
+import { GrObject } from "../libs/Framework/GrObject.js";
 import * as H from "./helperFun.js";
-import { GrCube } from "../../libs/Framework/SimpleObjects.js";
+import { GrCube } from "../libs/Framework/SimpleObjects.js";
 
 let woodBuildingCtr = 0;
 let t_wood;
@@ -166,7 +166,7 @@ export class BuildingWood extends GrObject {
         const num_face_roof_rect = 2;
         const num_face_roof_tri = 2;
         if (!t_wood) {
-            t_wood = new T.TextureLoader().load("./images/wood_texture.jpg");
+            t_wood = new T.TextureLoader().load("Images/wood_texture.jpg");
             t_wood.repeat.set(2, 2);
             t_wood.wrapS = T.MirroredRepeatWrapping;
             t_wood.wrapT = T.MirroredRepeatWrapping;
@@ -296,7 +296,7 @@ class woodWindow extends GrObject {
     constructor(h, w) {
         let geometry = new doorGeometry(h, w, "white").geometry;
         if (!t_window_wood) {
-            t_window_wood = new T.TextureLoader().load("./images/window_wood_texture.jpg");
+            t_window_wood = new T.TextureLoader().load("Images/window_wood_texture.jpg");
             t_window_wood.repeat.set(2, 2);
             t_window_wood.wrapS = T.MirroredRepeatWrapping;
             t_window_wood.wrapT = T.MirroredRepeatWrapping;
@@ -371,7 +371,7 @@ class woodDoor extends GrObject {
     constructor(h, w) {
         let geometry = new doorGeometry(h, w, "brown").geometry;
         if (!t_door_wood) {
-            t_door_wood = new T.TextureLoader().load("./images/door_wood_texture.jpg");
+            t_door_wood = new T.TextureLoader().load("Images/door_wood_texture.jpg");
             t_door_wood.repeat.set(2, 2);
             t_door_wood.wrapS = T.MirroredRepeatWrapping;
             t_door_wood.wrapT = T.MirroredRepeatWrapping;
@@ -541,7 +541,7 @@ export class BuildingBrick extends GrObject {
         const num_face_side = 4;
         const num_face_roof = 4;
         if (!t_brick) {
-            t_brick = new T.TextureLoader().load("./images/brick_texture2.jpg");
+            t_brick = new T.TextureLoader().load("Images/brick_texture2.jpg");
             t_brick.repeat.set(1, 2);
             t_brick.wrapS = T.MirroredRepeatWrapping;
             t_brick.wrapT = T.MirroredRepeatWrapping;
@@ -678,7 +678,7 @@ class stoneWindow extends GrObject {
     constructor(h, w) {
         let geometry = new doorGeometry(h, w, "white").geometry;
         if (!t_window_brick) {
-            t_window_brick = new T.TextureLoader().load("./images/window_stone_texture.png");
+            t_window_brick = new T.TextureLoader().load("Images/window_stone_texture.png");
         }
 
         let material = new T.MeshStandardMaterial({
@@ -698,7 +698,7 @@ class metalDoor extends GrObject {
     constructor(h, w) {
         let geometry = new doorGeometry(h, w, "white").geometry;
         if (!t_door_brick) {
-            t_door_brick = new T.TextureLoader().load("./images/door_metal_texture.jpg");
+            t_door_brick = new T.TextureLoader().load("Images/door_metal_texture.jpg");
         }
 
         let material = new T.MeshStandardMaterial({

@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/THREE/build/three.module.js";
-import { GrObject } from "../../libs/Framework/GrObject.js";
-// import { ObjGrObject } from "../../libs/Framework/loaders.js";
+import * as T from "../libs/THREE/build/three.module.js";
+import { GrObject } from "../libs/Framework/GrObject.js";
+// import { ObjGrObject } from "../libs/Framework/loaders.js";
 import * as H from "./helperFun.js";
 
 let helicopterCtr = 0;
