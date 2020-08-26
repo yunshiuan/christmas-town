@@ -108,7 +108,7 @@ export class Carousel extends GrObject {
         // load the horse object once for all
         let horseObj = new ObjGrObject(
             {
-                obj: '/for_students/objects/standing-horse.obj',
+                obj: '/objects/standing-horse.obj',
                 name: 'horse'
             }
         );
