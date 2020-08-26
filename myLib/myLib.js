@@ -6,7 +6,7 @@
 // This sets up the town loading different objects. 
 // It should be called from the onload function, after the world has been created
 
-import { GrWorld } from "../../libs/CS559-Framework/GrWorld.js";
+import { GrWorld } from "../../libs/Framework/GrWorld.js";
 // import { SimpleHouse } from "../../examples/house.js";
 // import { CircularTrack, TrackCube, TrackCar } from "../../examples/track.js";
 // import { Helicopter, Helipad } from "../../examples/helicopter.js";
@@ -24,8 +24,8 @@ import { cubeTextureHelp } from "./skybox.js";
 import { Mound } from "./mound.js";
 import { FireWorkShooter } from "./firework.js";
 
-import * as T from "../../libs/CS559-THREE/build/three.module.js";
-import { AxesHelper } from "../../libs/CS559-THREE/build/three.module.js";
+import * as T from "../../libs/THREE/build/three.module.js";
+import { AxesHelper } from "../../libs/THREE/build/three.module.js";
 import { Pond } from "./pond.js";
 import { GrBall } from "./testBall.js";
 import { Truck } from "./truck.js";

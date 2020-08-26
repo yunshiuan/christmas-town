@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/CS559-THREE/build/three.module.js";
-import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
+import * as T from "../../libs/THREE/build/three.module.js";
+import { GrObject } from "../../libs/Framework/GrObject.js";
 import * as H from "./helperFun.js";
-import { GrCube } from "../../libs/CS559-Framework/SimpleObjects.js";
+import { GrCube } from "../../libs/Framework/SimpleObjects.js";
 
 let woodBuildingCtr = 0;
 let t_wood;

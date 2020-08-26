@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/CS559-THREE/build/three.module.js";
-import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
+import * as T from "../../libs/THREE/build/three.module.js";
+import { GrObject } from "../../libs/Framework/GrObject.js";
 import { Rock } from "./rock.js";
 import * as H from "./helperFun.js";
 

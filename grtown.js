@@ -15,14 +15,14 @@
  * file to instantiate those objects in the world.
  */
 
-import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
-import * as Helpers from "../libs/CS559-Libs/helpers.js";
-import { WorldUI } from "../libs/CS559-Framework/WorldUI.js";
-import * as T from "../libs/CS559-THREE/build/three.module.js";
+import { GrWorld } from "/libs/Framework/GrWorld.js";
+import * as Helpers from "/libs/Libs/helpers.js";
+import { WorldUI } from "/libs/Framework/WorldUI.js";
+import * as T from "/libs/THREE/build/three.module.js";
 
 // import {main} from "../examples/main.js";
-import { main } from "./myLib/myLib.js";
-import { GroundPlane } from "./myLib/groundPlane.js";
+import { main } from "/myLib/myLib.js";
+import { GroundPlane } from "/myLib/groundPlane.js";
 
 /**
  * The Graphics Town Main -

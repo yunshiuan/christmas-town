@@ -1,11 +1,11 @@
 /*jshint esversion: 6 */
 // @ts-check
-import * as T from "../../libs/CS559-THREE/build/three.module.js";
-import { GrObject } from "../../libs/CS559-Framework/GrObject.js";
-import { shaderMaterial } from "../../libs/CS559-Framework/shaderHelper.js";
+import * as T from "../../libs/THREE/build/three.module.js";
+import { GrObject } from "../../libs/Framework/GrObject.js";
+import { shaderMaterial } from "../../libs/Framework/shaderHelper.js";
 
 import * as H from "./helperFun.js";
-import { Material } from "../../libs/CS559-THREE/build/three.module.js";
+import { Material } from "../../libs/THREE/build/three.module.js";
 
 let GroundPlaneObCtr = 0;
 let material;

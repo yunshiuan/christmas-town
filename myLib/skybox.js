@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 // @ts-check
 
-import * as T from "../../libs/CS559-THREE/build/three.module.js";
+import * as T from "../../libs/THREE/build/three.module.js";
 
 /**
 * Read in a set of textures from HDRI Heaven, as converted by 
